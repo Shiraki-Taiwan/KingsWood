@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<OperatorMappingSettings>
+  <OperatorMappingSetting group="1" name="default" text="預設"></OperatorMappingSetting>
+  <OperatorMappingSetting group="1" name="china-logistics" text="北部／中國"></OperatorMappingSetting>
+  <OperatorMappingSetting group="1" name="keeins2" text="北部／東亞"></OperatorMappingSetting>
+  <OperatorMappingSetting group="1" name="keeins3" text="北部／環球"></OperatorMappingSetting>
+  <OperatorMappingSetting group="1" name="keeins4" text="北部／長榮"></OperatorMappingSetting>
+  <OperatorMappingSetting group="1" name="keeins5" text="北部／長春／韓泰線"></OperatorMappingSetting>
+  <OperatorMappingSetting group="1" name="keeins5x1" text="北部／長春／星馬線"></OperatorMappingSetting>
+  <OperatorMappingSetting group="1" name="keeins6" text="基隆／台陽"></OperatorMappingSetting>
+  <OperatorMappingSetting group="1" name="keeins7" text="北部／弘貿"></OperatorMappingSetting>
+  <OperatorMappingSetting group="1" name="keeins8" text="北部／台基"></OperatorMappingSetting>
+  <OperatorMappingSetting group="1" name="keeins9" text="北部／中央"></OperatorMappingSetting>
+
+  <OperatorMappingSetting group="2" name="tpeins01" text="台北／台北港"></OperatorMappingSetting>
+
+  <OperatorMappingSetting group="3" name="agcmt" text="桃園／貿聯"></OperatorMappingSetting>
+  <OperatorMappingSetting group="3" name="cmt-emc" text="中航物流／EMC"></OperatorMappingSetting>
+  <OperatorMappingSetting group="3" name="cmt" text="中航物流／其他"></OperatorMappingSetting>
+  <OperatorMappingSetting group="3" name="taoins3" text="桃園／東海"></OperatorMappingSetting>
+  <OperatorMappingSetting group="3" name="taoins4" text="桃園／欣隆"></OperatorMappingSetting>
+
+  <OperatorMappingSetting group="4" name="taiins1" text="中櫃09號碼頭"></OperatorMappingSetting>
+  <OperatorMappingSetting group="4" name="taiins3" text="中櫃31號碼頭"></OperatorMappingSetting>
+  <OperatorMappingSetting group="4" name="taiins2" text="長榮32號碼頭"></OperatorMappingSetting>
+  <OperatorMappingSetting group="4" name="taiins4" text="中櫃09號碼頭-白文德"></OperatorMappingSetting>
+  <OperatorMappingSetting group="4" name="taiins5" text="中櫃31號碼頭-白文德"></OperatorMappingSetting>
+  <OperatorMappingSetting group="4" name="taiins6" text="長榮32號碼頭-白文德"></OperatorMappingSetting>
+
+  <OperatorMappingSetting group="5" name="twkil-hm" text="高鳳／HANJIN、MOL"></OperatorMappingSetting>
+  <OperatorMappingSetting group="5" name="twkil" text="高鳳／其他"></OperatorMappingSetting>
+  <OperatorMappingSetting group="5" name="kaoins2" text="高雄／亞太"></OperatorMappingSetting>
+  <OperatorMappingSetting group="5" name="kaoins3" text="高雄／友聯"></OperatorMappingSetting>
+  <OperatorMappingSetting group="5" name="kaoins4" text="高雄／高雄-66W"></OperatorMappingSetting>
+  <OperatorMappingSetting group="5" name="kaoins69" text="高雄／高雄-69W"></OperatorMappingSetting>
+  <OperatorMappingSetting group="5" name="kaoins6" text="高雄／高雄-70W"></OperatorMappingSetting>
+  <OperatorMappingSetting group="5" name="kaoins7" text="高雄／高雄-76W"></OperatorMappingSetting>
+  <OperatorMappingSetting group="5" name="kaoins8" text="高雄／高雄-78W"></OperatorMappingSetting>
+  <OperatorMappingSetting group="5" name="kaoins9" text="高雄／高雄-118W"></OperatorMappingSetting>
+  <OperatorMappingSetting group="5" name="kaoins10" text="高雄／高雄-121W"></OperatorMappingSetting>
+</OperatorMappingSettings>

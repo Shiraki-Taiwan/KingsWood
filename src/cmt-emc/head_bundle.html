@@ -1,0 +1,16 @@
+﻿<link rel="stylesheet" type="text/css" href="../GlobalSet/main.css" media="screen, print" />
+<script type="text/javascript" src="../Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../GlobalSet/ShareFun.js"></script>
+<script>
+	var initialiseMenu = function () { };
+	$(document).ready(function () {
+		$("ul.mainmenu li").each(function () {
+			var sul_count = $(this).children("ul").length;
+			if (sul_count > 0) {
+				$(this)
+					.mouseover(function () { $(this).children("ul").show(); })
+					.mouseout(function () { $(this).children("ul").hide(); });
+			}
+		});
+	});
+</script>

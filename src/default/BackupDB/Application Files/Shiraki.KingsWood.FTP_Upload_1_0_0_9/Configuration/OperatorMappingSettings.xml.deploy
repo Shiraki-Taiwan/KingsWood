@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<OperatorMappingSettings>
+  <OperatorMappingSetting name="default" text="預設" default="true">
+    <backupURL>http://www.kingswood.url.tw/default/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/default/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/default/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="agcmt" text="桃園／貿聯">
+    <backupURL>http://www.kingswood.url.tw/agcmt/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/agcmt/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/agcmt/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="taiins1" text="台中／中國">
+    <backupURL>http://www.kingswood.url.tw/taiins1/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/taiins1/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/taiins1/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins8" text="高雄／高雄-78W">
+    <backupURL>http://www.kingswood.url.tw/kaoins8/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/kaoins8/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/kaoins8/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="keeins6" text="基隆／台陽">
+    <backupURL>http://www.kingswood.url.tw/keeins6/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/keeins6/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/keeins6/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+</OperatorMappingSettings>

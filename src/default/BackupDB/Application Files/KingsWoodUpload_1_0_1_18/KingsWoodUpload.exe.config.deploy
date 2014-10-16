@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <configSections>
+        <sectionGroup name="userSettings" type="System.Configuration.UserSettingsGroup, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" >
+            <section name="Shiraki.KingsWood.FTP_Upload.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" allowExeDefinition="MachineToLocalUser" requirePermission="false" />
+        </sectionGroup>
+    </configSections>
+    <userSettings>
+        <Shiraki.KingsWood.FTP_Upload.Properties.Settings>
+            <setting name="OM_Name" serializeAs="String">
+                <value>default</value>
+            </setting>
+        </Shiraki.KingsWood.FTP_Upload.Properties.Settings>
+    </userSettings>
+</configuration>

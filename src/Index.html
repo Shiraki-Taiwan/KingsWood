@@ -1,0 +1,163 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>《航運系統》貨櫃場選擇頁</title>
+	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<!--<script src="jquery-1.10.2.js"></script>-->
+	<script type="text/javascript">
+		if (top != self) top.location.href = "http://www.kingswood.url.tw/";
+	</script>
+	<style type="text/css">
+		ul {
+			list-style: none;
+		}
+		thead {
+			background-color: #3366cc;
+			border-color: #fff;
+			text-align: center;
+		}
+			thead th {
+				color: #fff;
+				width: 25%;
+			}
+		tbody {
+			background-color: #c9e0f8;
+			font-weight: bold;
+			border-top-width: 1px;
+			border-top-style: double;
+			border-top-color: #fff;
+		}
+			tbody th {
+				background-color: #3366cc;
+				border-color: #fff;
+				text-align: center;
+				color: #fff;
+				width: 20%;
+				min-height: 80px;
+			}
+		.data-view ul {
+			margin: 3px;
+			padding: 1px;
+			vertical-align: top;
+		}
+		.data-view ul li {
+			float: left;
+			display: block;
+			width: 180px;
+			padding: 1px;
+		}
+	</style>
+</head>
+<body>
+	<div style="margin: 0px auto; width: 720px;">
+		<ul style="border: solid 0px #3366CC; width: 800px;">
+			<li><span style="font-size: medium; color: #0000ff">上林公證有限公司 版權所有 &copy; 2013. All Rights Reserved.<br />
+				Kingswood Survey & Measurer Ltd.</span></li>
+		</ul>
+		<table style="width: 100%;">
+			<tbody class="data-view">
+				<tr>
+					<th>基隆地區</th>
+					<td>
+						<ul class="c1"></ul>
+					</td>
+				</tr>
+				<tr>
+					<th>台北地區</th>
+					<td>
+						<ul class="c5"></ul>
+					</td>
+				</tr>
+				<tr>
+					<th>桃園地區</th>
+					<td>
+						<ul class="c2"></ul>
+					</td>
+				</tr>
+				<tr>
+					<th>台中地區</th>
+					<td>
+						<ul class="c3"></ul>
+					</td>
+				</tr>
+				<tr>
+					<th>南部地區</th>
+					<td>
+						<ul class="c4"></ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+    <script>
+        $(function () {
+        	var list = { c1: [], c2: [], c3: [], c4: [], c5: [] };
+        	var listRender = function (target, obj) {
+        		var data = [{ name: "", id: "", enable: false }];
+        		var d = $.extend([{}], data, obj);
+
+        		for (var i = 0; i < d.length; i++) {
+        			if (d[i].enable)
+        				$(target).append("<li><a href=\"" + d[i].id + "/Voyage/VOfun01a.asp\">" + d[i].name + "</a></li>");
+        			else
+        				$(target).append("<li>" + d[i].name + "</li>");
+        		}
+        	};
+        	// 然後開站的部份  現有的北部/長春變成  北部/長春/韓泰線  新增 北部/長春/星馬線  這真的也很急  拜託了
+            list.c1.push({ name: "北部／中國", id: "china-logistics", enable: true });
+            list.c1.push({ name: "北部／東亞", id: "keeins2", enable: true });
+            list.c1.push({ name: "北部／環球", id: "keeins3", enable: true });
+            list.c1.push({ name: "北部／長榮", id: "keeins4", enable: true });
+            list.c1.push({ name: "北部／長春／韓泰線", id: "keeins5", enable: true });
+            list.c1.push({ name: "北部／長春／星馬線", id: "keeins5x1", enable: true });
+            list.c1.push({ name: "基隆／台陽", id: "keeins6", enable: true });
+            list.c1.push({ name: "北部／弘貿", id: "keeins7", enable: true });
+            list.c1.push({ name: "北部／台基", id: "keeins8", enable: true });
+            list.c1.push({ name: "北部／中央", id: "keeins9", enable: true });
+        	//list.c1.push({ name: "", id: "Default", enable: false });
+
+            list.c2.push({ name: "桃園／貿聯", id: "agcmt", enable: true });
+            list.c2.push({ name: "中航物流／EMC", id: "cmt-emc", enable: true });
+            list.c2.push({ name: "中航物流／其他", id: "cmt", enable: true });
+            list.c2.push({ name: "東海", id: "taoins3", enable: true });
+            list.c2.push({ name: "欣隆", id: "taoins4", enable: true });
+        	//list.c2.push({ name: "", id: "Default", enable: false });
+
+            list.c3.push({ name: "中櫃09號碼頭", id: "taiins1", enable: true });
+            list.c3.push({ name: "中櫃31號碼頭", id: "taiins3", enable: true });
+            list.c3.push({ name: "長榮32號碼頭", id: "taiins2", enable: true });
+            list.c3.push({ name: "中櫃09號碼頭-白文德", id: "taiins4", enable: true });
+            list.c3.push({ name: "中櫃31號碼頭-白文德", id: "taiins5", enable: true });
+            list.c3.push({ name: "長榮32號碼頭-白文德", id: "taiins6", enable: true });
+            //list.c3.push({ name: "", id: "Default", enable: false });
+
+            list.c4.push({ name: "高鳳／HANJIN、MOL", id: "twkil-hm", enable: true });
+            list.c4.push({ name: "高鳳／其他", id: "twkil", enable: true });
+            list.c4.push({ name: "亞太", id: "kaoins2", enable: true });
+            list.c4.push({ name: "友聯", id: "kaoins3", enable: true });
+            list.c4.push({ name: "高雄-66W", id: "kaoins4", enable: true });
+
+            list.c4.push({ name: "高雄-69W", id: "kaoins69", enable: true });
+            list.c4.push({ name: "高雄-70W", id: "kaoins6", enable: true });
+            list.c4.push({ name: "高雄-76W", id: "kaoins7", enable: true });
+            list.c4.push({ name: "高雄-78W", id: "kaoins8", enable: true });
+            list.c4.push({ name: "高雄-118W", id: "kaoins9", enable: true });
+            list.c4.push({ name: "高雄-121W", id: "kaoins10", enable: true });
+            //list.c4.push({ name: "", id: "Default", enable: false });
+
+            list.c5.push({ name: "台北港", id: "tpeins01", enable: true });
+
+            //listRender($(".c1"), list.c1);
+            //listRender($(".c2"), list.c2);
+            //listRender($(".c3"), list.c3);
+            //listRender($(".c4"), list.c4);
+            //listRender($(".c5"), list.c5);
+
+            for (var c in list) {
+            	listRender($("." + c), list[c]);
+            }
+        });
+    </script>
+</body>
+</html>

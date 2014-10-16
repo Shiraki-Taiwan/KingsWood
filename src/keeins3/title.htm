@@ -1,0 +1,42 @@
+﻿<%
+	'02-May2005: 權限檢查
+	if Session.Contents("GroupType@KEEINS3") < 0 then
+		response.redirect "../Login/Login.asp"
+	end if
+
+	dim nGroupType	
+	nGroupType = Session.Contents("GroupType@KEEINS3")
+
+	if nGroupType = 1 then
+%>
+<ul style="width: 170px;" class="mainmenu">
+	<li><a>度量登錄作業</a>
+		<ul>
+			<li><a href="../Voyage/VOfun01a.asp">航次資料設定(CTRL + 7)</a></li>
+			<li><a href="../FreightForm/FFfun02a.asp">進倉單資料查詢/修改/核定</a></li>
+		</ul>
+	</li>
+</ul>
+<ul style="width: 170px;" class="mainmenu">
+	<li><a href="../GlobalSet/MainMenu.asp">主選單(Ctrl + Q)</a></li>
+</ul>
+<ul style="width: 160px;" class="mainmenu">
+	<li><a href="../Login/Logout.asp">登　出</a></li>
+</ul>
+<ul style="border: solid 0px #3366CC; width: 800px;" class="mainmenu">
+	<li><span style="font-size: medium; color: #0000ff">上林公證有限公司 版權所有 &copy; 2013. All Rights Reserved.<br />
+		Kingswood Survey & Measurer Ltd.</span></li>
+</ul>
+<%
+	else
+%>
+<ul style="width: 160px;" class="mainmenu">
+	<li><a href="../Login/Logout.asp">登　出</a></li>
+</ul>
+<ul style="border: solid 0px #3366CC; width: 800px;" class="mainmenu">
+	<li><span style="font-size: medium; color: #0000ff">上林公證有限公司 版權所有 &copy; 2013. All Rights Reserved.<br />
+		Kingswood Survey & Measurer Ltd.</span></li>
+</ul>
+<%
+	end if
+%>

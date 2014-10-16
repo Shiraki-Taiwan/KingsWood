@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<OperatorMappingSettings>
+  <OperatorMappingSetting name="default" text="預設" default="true">
+    <backupURL>http://www.kingswood.url.tw/default/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/default/App_Data/INSDB.mdb</uploadURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="agcmt" text="貿聯">
+    <backupURL>http://www.kingswood.url.tw/agcmt/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/agcmt/App_Data/INSDB.mdb</uploadURL>
+  </OperatorMappingSetting>
+</OperatorMappingSettings>

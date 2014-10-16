@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<OperatorMappingSettings>
+  <OperatorMappingSetting name="default" text="預設" default="true">
+  </OperatorMappingSetting>
+
+  <OperatorMappingSetting name="china-logistics" text="北部／中國">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="keeins2" text="北部／東亞">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="keeins3" text="北部／環球">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="keeins4" text="北部／長榮">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="keeins5" text="北部／長春／韓泰線">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="keeins5x1" text="北部／長春／星馬線">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="keeins6" text="基隆／台陽">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="keeins7" text="北部／弘貿">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="keeins8" text="北部／台基">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="keeins9" text="北部／中央">
+  </OperatorMappingSetting>
+  
+  <OperatorMappingSetting name="agcmt" text="桃園／貿聯">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="cmt-emc" text="中航物流／EMC">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="cmt" text="中航物流／其他">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="taoins3" text="桃園／東海">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="taoins4" text="桃園／欣隆">
+  </OperatorMappingSetting>
+  
+  <OperatorMappingSetting name="taiins1" text="台中／中國">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="taiins2" text="台中／長榮">
+  </OperatorMappingSetting>
+  
+  <OperatorMappingSetting name="twkil-hm" text="高鳳／HANJIN、MOL">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="twkil" text="高鳳／其他">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins2" text="高雄／亞太">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins3" text="高雄／友聯">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins4" text="高雄／高雄-66W">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins69" text="高雄／高雄-69W">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins6" text="高雄／高雄-70W">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins7" text="高雄／高雄-76W">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins8" text="高雄／高雄-78W">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins9" text="高雄／高雄-118W">
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins10" text="高雄／高雄-121W">
+  </OperatorMappingSetting>
+  
+</OperatorMappingSettings>

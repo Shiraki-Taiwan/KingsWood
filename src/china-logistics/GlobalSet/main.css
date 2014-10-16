@@ -1,0 +1,186 @@
+body
+{
+	margin: 0;
+	border: 0;
+	padding: 0;
+	font-family: Verdana, Arial, Sans-Serif;
+	font-size: 0;
+}
+
+img
+{
+	border: none 0 #ffffff;
+}
+
+h1
+{
+	background-color: #3366cc;
+	border-bottom: solid 1px #333333;
+	padding: 5px;
+	margin: 0;
+	font-size: x-large;
+}
+
+h2
+{
+	font-size: large;
+}
+
+p
+{
+	font-size: small;
+}
+
+/* Real menu */
+ul, li
+{
+	font-size: small;
+	margin-top: 0;
+	margin-right: 0;
+	margin-bottom: 0;
+	display: block;
+}
+
+ul
+{
+	width: 250px;
+	border: solid 1px #3366cc;
+	border-top: solid 5px #3366cc;
+	border-right: solid 2px #3366cc;
+	padding: 0;
+}
+
+li ul
+{
+	display: none;
+	position: absolute;
+	margin-left: 80px;
+	margin-top: -10px;
+}
+
+li a
+{
+	padding: 2px;
+	text-decoration: none;
+	color: #000000;
+	background-color: #C9E0F8;
+	width: 100%;
+	display: block;
+	border-bottom: dashed 1px #3366cc;
+	text-indent: 2px;
+	font-size: small;
+}
+
+li a:hover
+{
+	background-color: #ffeddb;
+	border-bottom: solid 1px #3366cc;
+}
+
+li
+{	
+	float: left;
+	width: 100%;
+}
+
+a.hassubmenu
+{
+	background-repeat: no-repeat;
+	background-position: 120px 7px;
+}
+
+#mainmenu, .mainmenu
+{
+	margin: 7px;	
+	margin-left: 5px;	
+	float: left;
+	border-bottom: solid 2px #3366cc;
+}
+
+.head {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 12pt; FONT-STYLE: normal; LINE-HEIGHT: 16pt
+}
+.item {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 12pt; FONT-STYLE: normal; FONT-WEIGHT: bold; LINE-HEIGHT: 13pt
+}
+.item2 {
+	COLOR: #454863; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 10pt; FONT-STYLE: normal; FONT-WEIGHT: bold; LINE-HEIGHT: 13pt; VERTICAL-ALIGN: middle
+}
+.item3 {
+	COLOR: #454863; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 12pt; FONT-STYLE: normal; FONT-WEIGHT: bold; LINE-HEIGHT: 15pt
+}
+.item4 {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 12pt; FONT-STYLE: normal; FONT-WEIGHT: bold; LINE-HEIGHT: 13pt
+}
+.link {
+	COLOR: #ffffff; FONT-FAMILY: arial,verdana; FONT-SIZE: 9pt; FONT-STYLE: normal; LINE-HEIGHT: 13pt; VERTICAL-ALIGN: middle
+}
+.topic {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 12pt; FONT-STYLE: normal; LINE-HEIGHT: 13pt
+}
+.topic2 {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 12pt; FONT-STYLE: normal; LINE-HEIGHT: 14pt; VERTICAL-ALIGN: middle
+}
+.news {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 12pt; FONT-STYLE: normal; LINE-HEIGHT: 15pt; VERTICAL-ALIGN: middle
+}
+.news2 {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 12pt; FONT-STYLE: normal; LINE-HEIGHT: 14pt; VERTICAL-ALIGN: middle
+}
+.qaguy {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 10pt; FONT-STYLE: normal; LINE-HEIGHT: 13pt; VERTICAL-ALIGN: bottom
+}
+.small {
+	COLOR: #000000; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 10pt; FONT-STYLE: normal; LINE-HEIGHT: 15pt; VERTICAL-ALIGN: middle
+}
+.small1 {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 10pt; FONT-STYLE: normal; LINE-HEIGHT: 15pt
+}
+.small2 {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 9pt; FONT-STYLE: normal; LINE-HEIGHT: 13pt; VERTICAL-ALIGN: middle
+}
+.small3 {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 8pt; FONT-STYLE: normal; LINE-HEIGHT: 13pt; VERTICAL-ALIGN: middle
+}
+.small4 {
+	COLOR: #565e73; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 10pt; FONT-STYLE: normal; LINE-HEIGHT: 15pt; VERTICAL-ALIGN: bottom
+}
+.small5 {
+	COLOR: #ff4c00; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 10pt; FONT-STYLE: normal; LINE-HEIGHT: 13pt
+}
+.small6 {
+	COLOR: #263e43; FONT-FAMILY: arial; FONT-SIZE: 9pt; FONT-STYLE: normal; FONT-WEIGHT: bold; LINE-HEIGHT: 13pt; TEXT-DECORATION: underline; VERTICAL-ALIGN: middle; 
+	}
+.small7 {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 9pt; FONT-STYLE: normal; LINE-HEIGHT: 12pt; VERTICAL-ALIGN: middle
+}
+.small8 {
+	COLOR: #263e43; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 10pt; FONT-STYLE: normal; LINE-HEIGHT: 14pt
+}
+BODY {
+	COLOR: #263e43; FONT-SIZE: 12pt; FONT-STYLE: normal
+}
+TR {
+	COLOR: #263e43; FONT-SIZE: 14pt; FONT-STYLE: normal
+}
+TD {
+	COLOR: #000000; FONT-SIZE: 14pt; FONT-STYLE: normal
+}
+SELECT {
+	COLOR: #263e43; FONT-SIZE: 14pt; FONT-STYLE:
+}
+INPUT {
+	COLOR: #000000; FONT-SIZE: 14pt; FONT-STYLE: normal; FONT-FAMILY: Arial;border: 1px solid #6699FF;
+}
+A:link {
+	COLOR: #000080; TEXT-DECORATION: none
+}
+A:visited {
+	COLOR: #000080; TEXT-DECORATION: none
+}
+A:hover {
+	COLOR: #0000ff; TEXT-DECORATION: underline
+}
+.small-13 {
+	COLOR: #1562ad; FONT-FAMILY: 細明體, 新細明體; FONT-SIZE: 9pt; FONT-STYLE: normal; LINE-HEIGHT: 15pt
+}

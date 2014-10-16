@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<OperatorMappingSettings>
+  <OperatorMappingSetting name="default" text="預設" default="true">
+    <backupURL>http://www.kingswood.url.tw/default/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/default/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/default/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="keeins6" text="基隆／台陽">
+    <backupURL>http://www.kingswood.url.tw/keeins6/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/keeins6/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/keeins6/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="china-logistics" text="北部／中國">
+    <backupURL>http://www.kingswood.url.tw/china-logistics/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/china-logistics/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/china-logistics/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="agcmt" text="桃園／貿聯">
+    <backupURL>http://www.kingswood.url.tw/agcmt/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/agcmt/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/agcmt/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="cmt-emc" text="中航物流／EMC">
+    <backupURL>http://www.kingswood.url.tw/cmt-emc/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/cmt-emc/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/cmt-emc/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="cmt" text="中航物流／其他">
+    <backupURL>http://www.kingswood.url.tw/cmt/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/cmt/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/cmt/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="taiins1" text="台中／中國">
+    <backupURL>http://www.kingswood.url.tw/taiins1/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/taiins1/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/taiins1/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="twkil-hm" text="高鳳／HANJIN、MOL">
+    <backupURL>http://www.kingswood.url.tw/twkil-hm/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/twkil-hm/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/twkil-hm/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="twkil" text="高鳳／其他">
+    <backupURL>http://www.kingswood.url.tw/twkil/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/twkil/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/twkil/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins69" text="高雄／高雄-69W">
+    <backupURL>http://www.kingswood.url.tw/kaoins69/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/kaoins69/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/kaoins69/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+  <OperatorMappingSetting name="kaoins8" text="高雄／高雄-78W">
+    <backupURL>http://www.kingswood.url.tw/kaoins8/BackupDB/BackupINSDB.aspx</backupURL>
+    <uploadURL>ftp://210.242.73.198/www/kaoins8/App_Data/INSDB_{0}.mdb</uploadURL>
+    <switchURL>http://www.kingswood.url.tw/kaoins8/BackupDB/SwitchDb.aspx</switchURL>
+  </OperatorMappingSetting>
+</OperatorMappingSettings>
