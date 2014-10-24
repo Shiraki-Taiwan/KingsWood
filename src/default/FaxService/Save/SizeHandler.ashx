@@ -32,7 +32,7 @@ KINGSWOOD SURVEY & MEASURER LTD,,,,,,,,,,,,
 頁次,單號,倉位,板數,堆量,件數,包裝,長,寬,高,體積,單重,總重
 ";
 		csv.Body
-			= "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12}";
+            = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},(error:{13})";
 		csv.FloorSubtotal
 			= "小計,,,,,{0},,,,,{1},,";
 		csv.FloorTotal
@@ -52,7 +52,7 @@ KINGSWOOD SURVEY & MEASURER LTD,,,,,,,,,,,,
 ";
 		// {0:6}, {1:6}, {2:6}, {3:6}, {4:6}, {5:6}, {6:6}, {7:4.2}, {8:4.2}, {9:4.2}, {10:4.2}, {11:4.2}, {12:4.2}
 		txt.Body
-			= "{0}  {1}  {2}  {3}  {4}  {5}  {6}  {7}  {8}  {9}  {10}  {11}  {12}";
+            = "{0}  {1}  {2}  {3}  {4}  {5}  {6}  {7}  {8}  {9}  {10}  {11}  {12}  (error:{13})";
 		// {0:6}, {1:4.2}
 		txt.FloorSubtotal
 			=
@@ -177,7 +177,7 @@ KINGSWOOD SURVEY & MEASURER LTD,,,,,,,,,,,,
 				}
 				catch (Exception)
 				{
-
+                    //throw;
 				}
 				finally
 				{
@@ -221,7 +221,8 @@ KINGSWOOD SURVEY & MEASURER LTD,,,,,,,,,,,,
 							, d.Height
 							, d.Volume
 							, d.Weight
-							, d.TotalWeight).AppendLine();
+							, d.TotalWeight
+                            , d.Memo).AppendLine();
 					}
 					sb.AppendFormat(csv.FloorSubtotal
 						, summary.Value.nTotalPiece
@@ -278,7 +279,8 @@ KINGSWOOD SURVEY & MEASURER LTD,,,,,,,,,,,,
 							, String.Format("{0:0.00}", d.Height).PadLeft(7)
 							, String.Format("{0:0.00}", d.Volume).PadLeft(7)
 							, String.Format("{0:0.00}", d.Weight).PadLeft(7)
-							, String.Format("{0:0.00}", d.TotalWeight).PadLeft(7)).AppendLine();
+							, String.Format("{0:0.00}", d.TotalWeight).PadLeft(7)
+                            , d.Memo.PadLeft(7)).AppendLine();
 					}
 					// {0:6}, {1:4.2}
 					sb.AppendFormat(txt.FloorSubtotal
@@ -356,16 +358,18 @@ KINGSWOOD SURVEY & MEASURER LTD,,,,,,,,,,,,
 		public string PackageStyleID { get; set; }
 		public string PackageStyle { get; set; }
 
-		public double PageNo { get; set; }
-		public double Piece { get; set; }
-		public double Volume { get; set; }
-		public double Board { get; set; }
-		public double Width { get; set; }
-		public double Weight { get; set; }
-		public double Height { get; set; }
-		public double Length { get; set; }
-		public double NeededForestry { get; set; }
-		public double TotalWeight { get; set; }
+        public double PageNo;
+        public double Piece;
+        public double Volume;
+        public double Board;
+        public double Width;
+        public double Weight;
+        public double Height;
+        public double Length;
+        public double NeededForestry;
+        public double TotalWeight;
+
+        public string Memo = "";
 
 		public DbData(OleDbDataReader reader)
 		{
@@ -375,16 +379,65 @@ KINGSWOOD SURVEY & MEASURER LTD,,,,,,,,,,,,
 			Storehouse = reader["Storehouse"].ToString();
 			PackageStyleID = reader["PackageStyleID"].ToString();
 
-			PageNo = Convert.ToDouble(reader["PageNo"]);
-			Piece = Convert.ToDouble(reader["Piece"]);
-			Volume = Convert.ToDouble(reader["Volume"]);
-			Board = Convert.ToDouble(reader["Board"]);
-			Width = Convert.ToDouble(reader["Width"]);
-			Weight = Convert.ToDouble(reader["Weight"]);
-			Height = Convert.ToDouble(reader["Height"]);
-			Length = Convert.ToDouble(reader["Length"]);
-			NeededForestry = Convert.ToDouble(reader["NeededForestry"]);
-			TotalWeight = Convert.ToDouble(reader["TotalWeight"]);
+            if (double.TryParse(reader["PageNo"].ToString(), out PageNo) == false)
+            {
+                // PageNo = Convert.ToDouble(reader["PageNo"]);
+                Memo += reader["PageNo"].ToString();
+            }
+
+            if (double.TryParse(reader["Piece"].ToString(), out Piece) == false)
+            {
+                // Piece = Convert.ToDouble(reader["Piece"]);
+                Memo += reader["Piece"].ToString();
+            }
+
+            if (double.TryParse(reader["Volume"].ToString(), out Volume)==false)
+            {
+                // Volume = Convert.ToDouble(reader["Volume"]);
+                Memo += reader["Volume"].ToString();
+            }
+
+            if (double.TryParse(reader["Board"].ToString(), out Board) == false)
+            {
+                // Board = Convert.ToDouble(reader["Board"]);
+                Memo += reader["Board"].ToString();
+            }
+
+            if (double.TryParse(reader["Width"].ToString(), out Width)==false)
+            {
+                // Width = Convert.ToDouble(reader["Width"]);
+                Memo += reader["Width"].ToString();
+            }
+
+            if (double.TryParse(reader["Weight"].ToString(), out Weight) == false)
+            {
+                // Weight = Convert.ToDouble(reader["Weight"]);
+                Memo += reader["Weight"].ToString();
+            }
+
+            if (double.TryParse(reader["Height"].ToString(), out Height) == false)
+            {
+                // Height = Convert.ToDouble(reader["Height"]);
+                Memo += reader["Height"].ToString();
+            }
+
+            if (double.TryParse(reader["Length"].ToString(), out Length) == false)
+            {
+                // Length = Convert.ToDouble(reader["Length"]);
+                Memo += reader["Length"].ToString();
+            }
+
+            if (double.TryParse(reader["NeededForestry"].ToString(), out NeededForestry) == false)
+            {
+                // NeededForestry = Convert.ToDouble(reader["NeededForestry"]);
+                Memo += reader["NeededForestry"].ToString();
+            }
+
+            if (double.TryParse(reader["TotalWeight"].ToString(), out TotalWeight) == false)
+            {
+                // TotalWeight = Convert.ToDouble(reader["TotalWeight"]);
+                Memo += reader["TotalWeight"].ToString();
+            }
 		}
 	}
 }

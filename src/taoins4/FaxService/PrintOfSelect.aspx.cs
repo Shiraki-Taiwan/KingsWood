@@ -172,21 +172,48 @@ public partial class FaxService_PrintOfSelect : System.Web.UI.Page
 
         public bool IsChecked { get; set; }
 
-        public double TotalPiece { get; set; }
-        public double TotalVolume { get; set; }
-        public double TotalBoard { get; set; }
-        public double TotalWeightSum { get; set; }
-        public double NeededVolume { get; set; }
+        public double TotalPiece;
+        public double TotalVolume;
+        public double TotalBoard;
+        public double TotalWeightSum;
+        public double NeededVolume;
+
+        public string Memo = "";
 
         public DbData(OleDbDataReader reader)
         {
             ID = reader["ID"].ToString();
             IsChecked = Convert.ToBoolean(reader["IsChecked"]);
-            TotalPiece = Convert.ToDouble(reader["TotalPiece"]);
-            TotalVolume = Convert.ToDouble(reader["TotalVolume"]);
-            TotalBoard = Convert.ToDouble(reader["TotalBoard"]);
-            TotalWeightSum = Convert.ToDouble(reader["TotalWeightSum"]);
-            NeededVolume = Convert.ToDouble(reader["NeededForestry"]);
+
+            if (double.TryParse(reader["TotalPiece"].ToString(), out TotalPiece) == false)
+            {
+                // TotalPiece = Convert.ToDouble(reader["TotalPiece"]);
+                Memo += reader["TotalPiece"].ToString();
+            }
+
+            if (double.TryParse(reader["TotalVolume"].ToString(), out TotalVolume) == false)
+            {
+                // TotalVolume = Convert.ToDouble(reader["TotalVolume"]);
+                Memo += reader["TotalVolume"].ToString();
+            }
+
+            if (double.TryParse(reader["TotalBoard"].ToString(), out TotalBoard) == false)
+            {
+                // TotalBoard = Convert.ToDouble(reader["TotalBoard"]);
+                Memo += reader["TotalBoard"].ToString();
+            }
+
+            if (double.TryParse(reader["TotalWeightSum"].ToString(), out TotalWeightSum) == false)
+            {
+                // TotalWeightSum = Convert.ToDouble(reader["TotalWeightSum"]);
+                Memo += reader["TotalWeightSum"].ToString();
+            }
+
+            if (double.TryParse(reader["NeededForestry"].ToString(), out NeededVolume) == false)
+            {
+                // NeededVolume = Convert.ToDouble(reader["NeededForestry"]);
+                Memo += reader["NeededForestry"].ToString();
+            }
         }
     }
 }
