@@ -88,7 +88,7 @@ function MailByKeyPress()
     if (CheckKeyCode(KEY_CODE_SPACE)) // Check if press "Space"
     {
         //Fax();
-        Mail
+        Mail();
     }
     else if (CheckKeyCode(KEY_CODE_ENTER))
     {

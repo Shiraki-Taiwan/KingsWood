@@ -132,7 +132,7 @@
 											</tr>
 											<tr>
 												<td align="left" bgcolor="#C9E0F8" height="2"></td>
-												<td align="left" bgcolor="#C9E0F8" height="2"><a href="../BackupDB/publish.htm" target="_blank">03.上傳資料庫</a></td>
+												<td align="left" bgcolor="#C9E0F8" height="2"><a href="/Default/BackupDB/publish.htm" target="_blank">03.上傳資料庫</a></td>
 												<td align="left" bgcolor="#C9E0F8" height="2"></td>
 												<td align="left" bgcolor="#C9E0F8" height="2"></td>
 											</tr>
