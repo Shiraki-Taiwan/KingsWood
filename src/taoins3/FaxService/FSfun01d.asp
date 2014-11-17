@@ -11,7 +11,7 @@
 
 <%
 	'02-May2005: 權限檢查
-	if Session.Contents("GroupType@AGCMT") < 0 then
+	if Session.Contents("GroupType@TAOINS3") < 0 then
 		response.redirect "../Login/Login.asp"
 	end if
 
