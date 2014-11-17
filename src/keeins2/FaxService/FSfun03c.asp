@@ -698,16 +698,35 @@
                     
 		dim i, rs1
         dim FoId, FoName
-                    
+        dim hasVesselLine
+        
+		set rs = conn.execute("SELECT ID,Name FROM VesselLine WHERE ID = '" + szVesselLine + "'")
+
+        If rs.BOF And rs.EOF Then 
+            'rs沒有資料處理
+            hasVesselLine = false
+        Else 
+            'rs有值的處理 
+            hasVesselLine = true
+        End If
+
 		for i = 0 to nCount
 			'查倉單資料
 			set rs = nothing                            
                         
 			if nGroupType = 1 then
-				sql = "select ID, IsChecked, NeededForestry, sum(Piece) as TotalPiece, sum(Volume) as TotalVolume,"
-				sql = sql + " sum(TotalWeight) as TotalWeightSum, sum(Board) as TotalBoard"
-				sql = sql + " from FreightForm where VesselID = '" + szVesselListID + "' "
-			
+                If hasVesselLine Then
+				    sql = "SELECT ID, IsChecked, NeededForestry, SUM(Piece) AS TotalPiece, SUM(Volume) AS TotalVolume,"
+				    sql = sql + " SUM(TotalWeight) AS TotalWeightSum, SUM(Board) AS TotalBoard "
+				    sql = sql + " FROM FreightForm LEFT OUTER JOIN FormToOwner ON FormToOwner.FormID = FreightForm.ID "
+                    sql = sql + " WHERE VesselID = '" + szVesselListID + "' AND (FormToOwner.VesselLine = '" + szVesselLine + "' OR FormToOwner.VesselLine IS NULL)"
+                Else
+				    sql = "SELECT ID, IsChecked, NeededForestry, SUM(Piece) AS TotalPiece, SUM(Volume) AS TotalVolume,"
+				    sql = sql + " SUM(TotalWeight) AS TotalWeightSum, SUM(Board) AS TotalBoard "
+				    sql = sql + " FROM FreightForm "
+                    sql = sql + " WHERE VesselID = '" + szVesselListID + "' "
+                End If
+
 				if szStartIDTmp(i) <> "" and szEndIDTmp(i) <> "" then
 				   sql = sql + " AND FreightForm.ID >= '" + szStartIDTmp(i) + "' and FreightForm.ID <= '" + szEndIDTmp(i) + "' "
 				end if
@@ -744,7 +763,7 @@
 	
 				if r_szOwnerList = "" then
 					if szOwner = "" then
-						sql	= sql + "   AND FreightOwner.ID = '' "
+						sql	= sql + "   AND (FreightOwner.ID = '' OR FreightOwner.ID IS NULL) "
 					else
 						sql	= sql + "   AND FreightOwner.ID = '" + szOwner + "' "
 					end if
@@ -1090,7 +1109,7 @@
 				sql		= sql + "  LEFT OUTER JOIN FreightOwner ON FormToOwner.OwnerID = FreightOwner.ID) "
 				sql		= sql + " WHERE FreightForm.VesselID = '" + szVesselListID + "' "
 				sql		= sql + "   AND (FormToOwner.VesselLine = '" + szVesselLine + "' OR FormToOwner.VesselLine IS NULL) "
-				sql		= sql + "   AND FreightOwner.ID IS NULL "
+				sql		= sql + "   AND (FreightOwner.ID = '' OR FreightOwner.ID IS NULL) "
 			end if
                         
 			if nGroupType = 1 then
