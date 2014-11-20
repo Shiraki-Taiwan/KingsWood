@@ -4,19 +4,43 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>進倉單資料修改/核定</title>
-	<!-- #include file = ../head_bundle.html -->
-	<script type="text/javascript" src="FFfun02b.js"></script>
-	<script type="text/javascript" src="FFShareFun.js"></script>
-	<!--<script type="text/vbscript" src="FFShareFun.vbs"></script>-->
-    <script type="text/javascript">
-        function VolumeCalculator2(index) { }
-        function WeightCalculator2(index) { }
-        function OnPieceFocus(elem) { }
-        function SimpleCalculator(elem) { }
-    </script>
+    <title>進倉單資料修改/核定</title>
+    <!-- #include file = ../head_bundle.html -->
+    <script type="text/javascript" src="FFfun02b.js"></script>
+    <script type="text/javascript" src="FFShareFun.js"></script>
+    <script type="text/vbscript" src="FFShareFun.vbs"></script>
+	<script type="text/javascript">
+		var CallInputBox = function (x) { };
+		var OnPieceFocus = function (x) { };
+		var SimpleCalculator = function (a_index) { };
+		var VolumeCalculator2 = function (a_index) { };
+		var WeightCalculator2 = function (a_index) {
+			var nBoard,  nWeight;
+			
+			//var inputPiece = document.getElementById("Piece_".concat(a_index));
+			//var nPiece = inputPiece.getAttribute("value");
+
+			//dim nBoard, nPiece, nWeight
+			//nPiece = document.form(12+a_index*nFieldDiff).value
+			//If nPiece = "" Then
+			//    nPiece = 1
+			//End If
+			//nWeight = document.form(18+a_index*nFieldDiff).value
+			//If nWeight <> "" Then
+			//    document.form(19+a_index*nFieldDiff).value = MyFormatNumber(nPiece * nWeight, 1)
+			//End If
+		};
+	</script>
+	<style type="text/css">
+		body {
+			margin: 0;
+			margin-top: 10px;
+			color: #000;
+			background-color: #fff;
+		}
+	</style>
 </head>
-<body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="10" marginwidth="0" marginheight="0" onload="initialiseMenu(), CLocation();">
+<body onload="initialiseMenu(), CLocation();">
 	<!-- #include file = ../title.htm -->
 <%
     dim sql, rs
@@ -45,16 +69,16 @@
     else
         nPageNum = CLng(nPageNum)
     end if
-	
+    
     '19-Nov2004: if查詢不到某S/O的資料, 返回時要keep最後一次成功的查詢
     szPrevFoundID = request ("PrevFoundID")
     
     dim bFindID, szPrevID
     bFindID = 0
     if szID <> "" then
-		szPrevID = szID
+        szPrevID = szID
     else
-		szPrevID = ""
+        szPrevID = ""
     end if
     
     '找前/後一單號
@@ -66,6 +90,7 @@
     if szFind = "Prev" then
         while not rs.eof or bFindID <> 1
             
+            '把字串中的文字部分轉成大寫
             szID = UCase(szID) & szStrTmp
             
             if not rs.eof then
@@ -76,7 +101,7 @@
                         
             
             if szID = szCurID then
-                bFindID = 1
+                bFindID = 1     '找到現在的ID了
                 
                 if not rs.eof then
                     szID = szPrevID   
@@ -98,6 +123,7 @@
     
         while not rs.eof or bFindID <> 1
             
+            '把字串中的文字部分轉成大寫
             szID = UCase(szID)' & szStrTmp
           
             if not rs.eof then
@@ -107,7 +133,7 @@
             szCurID = UCase(szCurID) '& szStrTmp
             
             if szID = szCurID then
-                bFindID = 1
+                bFindID = 1     '找到現在的ID了
                 'szID = ""
                 if not rs.eof then
                     rs.movenext
@@ -127,6 +153,7 @@
         
         nPageNum = 1
     else
+        '18-Nov2004: 剛進入此page時, 顯示第一筆資料
         if szStatus = "FirstLoad" then            
             if not rs.eof then
                 szID = rs("ID")
@@ -138,7 +165,9 @@
         end if
         
     end if
-
+    
+    '29-Nov2004: 若輸入的單號不滿4位, 以0補滿, ex, 999 ==> 0999
+    
     if szID <> "" then
         IDTmp = szID
         
@@ -165,11 +194,11 @@
     dim nSNTmp(50)
     dim fVolumeForCheckingColor
     
+    '檢查是否核定過
     dim bIsChecked
-
+    set rs = nothing
     sql = "select ID from StoreSum where ID='" + CStr(szID) + "' and VesselListID = '" + CStr(szVesselListID) + "'"
-      
-    set rs = Conn.execute(sql)
+    set rs = conn.execute(sql)
     if not rs.eof then
         bIsChecked = 1
     else
@@ -178,6 +207,7 @@
     
     dim szVesselNoTmp, szVesselNameTmp, VesselDateTmp, szVesselLine
     
+    '查船的資料
     sql = "select * from VesselList where ID = '" + szVesselListID + "'"     
     set rs = conn.execute(sql)
     if not rs.eof then
@@ -196,7 +226,7 @@
     fStoreSum_ForestryTmp  = 0          '總才積
     fStoreSum_VolumeTmp    = 0          '總體積
       
-    dim nPredictPiece, fPredictVolume, fPredictForestry, fNeededForestry
+    dim nPredictPiece, fPredictVolume, fPredictForestry, fNeededForestry, fPredictWeight
       
     '19-Dec2004: For 分頁功能 ===========================
     
@@ -245,9 +275,10 @@
     dim nSkipDataNumTmp
     nSkipDataNumTmp = nSkipDataNum
     
-    dim iDataIndex, bSkipAnyPiece
-    bSkipAnyPiece = false
+    dim iDataIndex, bSkipAnyPiece, bHasColumn
     
+    bSkipAnyPiece = false
+    bHasColumn = true
     
     while not rs.eof
         '只有指定頁次的資料需要顯示
@@ -339,10 +370,22 @@
             
         end if
         
-        nPredictPiece                     = rs("PredictPiece")      '預測件數
-        fPredictVolume                    = rs("PredictVolume")     '預測體積
-        fPredictForestry                  = rs("PredictForestry")   '預測才積
-        fNeededForestry                   = rs("NeededForestry")    '需求才積
+        nPredictPiece                   = rs("PredictPiece")      '預測件數
+        fPredictVolume                  = rs("PredictVolume")     '預測體積
+        fPredictForestry                = rs("PredictForestry")   '預測才積
+        fNeededForestry                 = rs("NeededForestry")    '需求才積
+        
+        if bHasColumn then
+            On Error Resume Next
+            '以下為要判斷的程式區塊
+            fPredictWeight              = rs("PredictWeight")     '預測重量
+            
+            if Err.Number <> 0 then                               '錯誤處理
+                bHasColumn              = false
+            end if
+        else
+            fPredictWeight              = 0
+        end if 
         
         '計算總量
         nStoreSum_PieceTmp = nStoreSum_PieceTmp + rs("Piece")
@@ -359,6 +402,19 @@
         rs.movenext            
     wend
     
+    if bHasColumn = false then
+        rs.close
+
+        On Error Resume Next
+        '以下為要判斷的程式區塊
+        conn.execute("ALTER TABLE FreightForm ADD PredictWeight NUMBER")
+        
+        if Err.Number <> 0 then                               '錯誤處理
+            ' Nothing
+            Response.Write(Err.Description)
+        end if
+    end if
+
     '18-Nov2004: 若沒找到資料,則顯示沒有S/O資料 
     '19-Nov2004: 若有找到資料,則將此S/O號碼記起來,用以keep最後一次成功的查詢
     if szStatus = "Search" then
@@ -394,6 +450,12 @@
         fPredictForestry = FormatNumber (fPredictForestry, 2)
     end if
     
+    if fPredictWeight = 0 then
+        fPredictWeight = ""
+    else
+        fPredictWeight = FormatNumber (fPredictWeight, 2)
+    end if
+
     if fNeededForestry = 0 then
         fNeededForestry = ""
     else
@@ -440,43 +502,43 @@
     end if
 %>
 
-<form name="form" method="post" action="FFfun02c.asp" onsubmit=" javascript: return checkform();"  OnKeyDown="CheckHotKey(); CheckSaveHotKey(); CheckPrivateHotKey(); return CheckForbiddenKey();">
+<form name="form" method="post" action="FFfun02c.asp" onsubmit="javascript: return checkform();" OnKeyDown="CheckHotKey(); CheckSaveHotKey(); CheckPrivateHotKey(); return CheckForbiddenKey();">
 <table cellspacing=0 cellpadding=0 width="100%" border="0" align="center" >
-<tr> 
-    <td> 
-        <table cellspacing=0 cellpadding=0 width="100%" border=0>
-            <tbody> 
-                <tr bgcolor=#3366cc> 
-                    <td width="1"><img src="../image/coin2ltb.gif" width="20" height="26" /></td>
-					<td style="font-size: 14pt; color: #0000ff; text-align: center; width: 15%;">
-						<a style="color: #fff;" href="#">
-							計算機(=)
-						</a>
-					</td>
-					<td style="font-size: 14pt; color: #0000ff; text-align: center; width: 15%;">
-						<a style="color: #fff;" href="#" onclick="javascript:(function(){ if (document.form.IsChecked.value == 0) document.form.Piece_0.focus(); else alert('請取消核定再修改!'); })();">
-							到件數欄(Esc)
-						</a>
-					</td>
-					<td style="font-size: 14pt; color: #0000ff; text-align: center; width: 40%;">
-						<span style="color: #fff;">進倉單資料查詢/修改/核定</span>
-					</td>
-					<td style="font-size: 14pt; color: #0000ff; text-align: center; width: 15%;">
-						<a style="color: #fff;" href="../FaxService/FSfun01c.asp?ReportType=0&SelectType=2&HotKey=MailNew&VesselLine=<%=szVesselLine %>&VesselListID=<%=szVesselListID %>">
-							e-mail新增(Ctrl+S)
-						</a>
-					</td>
-					<td style="font-size: 14pt; color: #0000ff; text-align: center; width: 15%;">
-						<a style="color: #fff;" href="../FaxService/FSfun01c.asp?ReportType=0&SelectType=2&HotKey=MailAll&VesselLine=<%=szVesselLine %>&VesselListID=<%=szVesselListID %>">
-							e-mail全部(Ctrl+A)
-						</a>
-					</td>
-                    <td width="1"><img src="../image/coin2rtb.gif" width="20" height="26" /></td>
-                </tr>
-            </tbody> 
-        </table>
-    </td>
-</tr>
+    <tr>
+        <td>
+            <table cellspacing=0 cellpadding=0 width="100%" border=0>
+                <tbody> 
+                    <tr style="background-color: #3366cc;"> 
+                        <td style="width: 1px"><img src="../image/coin2ltb.gif" width="20" height="26" /></td>
+					    <td style="font-size: 14pt; color: #0000ff; text-align: center; width: 15%;">
+						    <a style="color: #fff;" href="#">
+							    計算機(=)
+						    </a>
+					    </td>
+					    <td style="font-size: 14pt; color: #0000ff; text-align: center; width: 15%;">
+						    <a style="color: #fff;" href="#" onclick="javascript:(function(){ if (document.form.IsChecked.value == 0) document.form.Piece_0.focus(); else alert('請取消核定再修改!'); })();">
+							    到件數欄(Esc)
+						    </a>
+					    </td>
+					    <td style="font-size: 14pt; color: #0000ff; text-align: center; width: 40%;">
+						    <span style="color: #fff;">進倉單資料查詢/修改/核定</span>
+					    </td>
+					    <td style="font-size: 14pt; color: #0000ff; text-align: center; width: 15%;">
+						    <a style="color: #fff;" href="../FaxService/FSfun01c.asp?ReportType=0&SelectType=2&HotKey=MailNew&VesselLine=<%=szVesselLine %>&VesselListID=<%=szVesselListID %>">
+							    e-mail新增(Ctrl+S)
+						    </a>
+					    </td>
+					    <td style="font-size: 14pt; color: #0000ff; text-align: center; width: 15%;">
+						    <a style="color: #fff;" href="../FaxService/FSfun01c.asp?ReportType=0&SelectType=2&HotKey=MailAll&VesselLine=<%=szVesselLine %>&VesselListID=<%=szVesselListID %>">
+							    e-mail全部(Ctrl+A)
+						    </a>
+					    </td>
+                        <td style="width: 1px"><img src="../image/coin2rtb.gif" width="20" height="26" /></td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
 <tr> 
     <td > 
         <table cellspacing=0 cellpadding=1 width="100%" bgcolor=#000000 border=0 height="8">
@@ -509,25 +571,28 @@
                                             end if
                                         %>
                                     </td>
+                                    <td align="left" width="8%">體　　積:</td>
+                                    <td align="left" width="9%" id="td_TotalVolume">
                             <%
                                 if fNeededForestry = "" then
                             %>
-                                    <td align="left" width="8%">體　　積:</td>
-                                    <td align="left" width="9%" id="td_TotalVolume"><font size="6"> 
+                                        <font size="6"> 
                                         <%
                                             if not bSkipAnyPiece then
                                                 response.write FormatNumber(fStoreSum_VolumeTmp, 2)
                                             end if
                                         %>
-                                    </td>                                    
+                                        </font>
                             <%
                                 else
                             %>
-                                    <td align="left" width="8%">體　　積:</td>
-                                    <td align="left" width="9%" id="td_TotalVolume"><font size="6" color="#FF0000"> <%=FormatNumber(fNeededForestry, 2)%></font></td>
+                                        <font size="6" color="#FF0000">
+                                            <%=FormatNumber(fNeededForestry, 2)%>
+                                        </font>
                             <%
                                 end if
                             %>
+                                    </td>
                                     <td align="left" width="8%">核　　定:</td>
                                     <td align="left" width="15%"><font size="6">
                                     <%
@@ -546,31 +611,34 @@
                                         <input type="text" name="PredictPiece" size="4" maxlength="6" value="<%=nPredictPiece%>" onfocus=SelectText(1) OnKeyDown="ChangeFocus(2)" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)">
                                     </td> 
                                     <td align="left" colspan=2>需求才積:
-                                        <input type="text" name="NeededForestry" size="4" maxlength="6" value="<%=fNeededForestry%>"" onblur="UpdateTotalPieceAndVolume(); UpdateNeededForestryLoseFocus()" onfocus="SelectText(2); UpdateNeededForestryHasFocus()" OnKeyDown="ChangeFocus(3)" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)">
+                                        <input type="text" name="NeededForestry" size="4" maxlength="6" value="<%=fNeededForestry%>" onblur="UpdateTotalPieceAndVolume(); UpdateNeededForestryLoseFocus()" onfocus="SelectText(2); UpdateNeededForestryHasFocus()" OnKeyDown="ChangeFocus(3)" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)">
                                     </td>
                                     
                                     <td align="left" colspan=2></td>
                                 </tr>
-                                <tr align="center" bgcolor=#C9E0F8 height="2"> 
-                                    <td align="left" ></td>
-                                    <td align="left">重　　量: <%=MyFormatNumber(fStoreSum_WeightTmp, 1)%></td>                                     
-                                    <td align="left" colspan=2>預測才積:
-                                        <input type="text" name="PredictForestry" size="4" maxlength="10" value="<%=fPredictForestry%>" onfocus=SelectText(3) OnKeyDown="ChangeFocus(4)" onblur="Predict_Volume()" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)">
+                                <tr style="background-color: #c9e0f8;">
+                                    <td></td>
+                                    <td>重　　量: <%=MyFormatNumber(fStoreSum_WeightTmp, 1)%></td>                                     
+                                    <td colspan=2>預測才積:
+                                        <input type="text" name="PredictForestry" size="4" maxlength="10" value="<%=fPredictForestry%>" onfocus="SelectText(3)" OnKeyDown="ChangeFocus(4)" onblur="Predict_Volume()" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)" />
                                     </td>
-                                    <td align="left" colspan=2>預測體積:
+                                    <td colspan=2>預測體積:
                                 <%
                                     if bIsChecked = 0 then  '未核定
                                 %>
-                                        <input type="text" name="PredictVolume" size="4" maxlength="10" value="<%=fPredictVolume%>" onfocus="SelectText(4); UpdatePredictVolumeHasFocus()" OnKeyDown="ChangeFocus(8)" onblur="Predict_Forestry(); UpdatePredictVolumeLoseFocus()" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)">
+                                        <input type="text" name="PredictVolume" size="4" maxlength="10" value="<%=fPredictVolume%>" onfocus="SelectText(4); UpdatePredictVolumeHasFocus()" OnKeyDown="ChangeFocus(8)" onblur="Predict_Forestry(); UpdatePredictVolumeLoseFocus()" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)" />
                                 <%
                                     else
                                 %>
-                                        <input type="text" name="PredictVolume" size="4" maxlength="10" value="<%=fPredictVolume%>" onfocus="SelectText(4); UpdatePredictVolumeHasFocus()" OnKeyDown="OnPredictVolume()" onblur="Predict_Forestry(); UpdatePredictVolumeLoseFocus()" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)">
+                                        <input type="text" name="PredictVolume" size="4" maxlength="10" value="<%=fPredictVolume%>" onfocus="SelectText(4); UpdatePredictVolumeHasFocus()" OnKeyDown="OnPredictVolume()" onblur="Predict_Forestry(); UpdatePredictVolumeLoseFocus()" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)" />
                                 <%
                                     end if
                                 %>    
                                     </td>
-                                    <td align="left" colspan=2></td>
+                                    <td colspan="2">
+                                        預測重量:
+                                        <input type="text" name="PredictWeight" size="4" maxlength="10" value="<% = fPredictWeight %>" onfocus="SelectText(5);" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)" />
+                                    </td>
                                 </tr>
                                     
                          </tbody>
@@ -578,28 +646,27 @@
                         <table cellspacing=0 cellpadding=0 width="100%" bgcolor=#ebebeb border=0 height="38">
                             <tbody>        
                                 <tr align="center" bgcolor=#C9E0F8 height="1">
-                                    <td width="3%"></td>
-                                    <td width="8%"></td>
-                                    <td width="8%"></td>
-                                    <td width="8%"></td>
-                                    <td width="6%"></td>
-                                    <td width="5%"></td>
-                                    <td width="8%"></td>
-                                    <td width="6%"></td>
-                                    <td width="8%"></td>
-                                    <td width="7%"></td>
-                                    <td width="8%"></td>
-                                    <td width="8%"></td>
-                                    <td width="8%"></td>
-                                    <td width="8%"></td> 
-                                    <td width="1%"></td>                     
+                                    <td style="width: 3%"></td>
+                                    <td style="width: 8%"></td>
+                                    <td style="width: 8%"></td>
+                                    <td style="width: 8%"></td>
+                                    <td style="width: 6%"></td>
+                                    <td style="width: 5%"></td>
+                                    <td style="width: 8%"></td>
+                                    <td style="width: 6%"></td>
+                                    <td style="width: 8%"></td>
+                                    <td style="width: 7%"></td>
+                                    <td style="width: 8%"></td>
+                                    <td style="width: 8%"></td>
+                                    <td style="width: 8%"></td>
+                                    <td style="width: 8%"></td> 
+                                    <td style="width: 1%"></td>                     
                                 </tr> 
                                 
                                 
                                 <tr> 
                                     <td align="center" bgcolor=#C9E0F8 height="2" colspan=15><hr></td>                            
                                 </tr> 
-                                
                                 <tr align="center" bgcolor=#C9E0F8 height="2"> 
                                     <td></td> 
                                     <td><font size="3">頁 次</font></td>
@@ -617,22 +684,19 @@
                                     <td><font size="3">總 重</font></td> 
                                     <td></td>                       
                                 </tr> 
-                         
-                        <%
-                            dim nLineCnt, nPreTextCount, nCurIndex
-                            nLineCnt = 0
-                            nPreTextCount = 5
-                            nCurIndex = 0
-                            
-                             
-                            '查詢包裝
-                            sql="select * from PackageStyle order by ID"
-                            set rs=conn.execute(sql)
-                            
-                            
+                                <%
+                                    dim nLineCnt, nPreTextCount, nCurIndex
+                                    nLineCnt = 0
+                                    nPreTextCount = 6
+                                    nCurIndex = 0
+                                    
+                                    '查詢包裝
+                                    sql="select * from PackageStyle order by ID"
+                                    set rs=conn.execute(sql)
+                                    
                             for i = 0 to nDataCounter-1
                                 if bIsChecked = 0  then 
-                        %> 
+                                %> 
                                     <%
                                         nCurIndex = nLineCnt + nPreTextCount
                                     %>
@@ -677,7 +741,7 @@
                                         <%
                                             nCurIndex = nCurIndex + 1
                                         %>
-                                        <td><input type="text" style="background-color: <%=szBgColor(i)%>" dir="rtl" name="Piece_<%=i%>" size="3" maxlength="5" value="<%=nPieceTmp(i)%>" onblur="SimpleCalculator(<%=nCurIndex%>); VolumeCalculator2(<%=i%>)" onfocus="OnPieceFocus(<%=nCurIndex%>); SelectText(<%=nCurIndex%>)" OnKeyDown="OnDirectionKey_MField(<%=nCurIndex%>, <%=nDataCounter%>, <%=i%>); ChangeFocus(<%=nCurIndex+2%>)"  onkeyup="CallInputBox(<%=nCurIndex%>)" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)"></td>
+                                        <td><input type="text" style="background-color: <%=szBgColor(i)%>" dir="rtl" id="Piece_<% = i%>" name="Piece_<% = i%>" size="3" maxlength="5" value="<%=nPieceTmp(i)%>" onblur="SimpleCalculator(<%=nCurIndex%>); VolumeCalculator2(<%=i%>)" onfocus="OnPieceFocus(<%=nCurIndex%>); SelectText(<%=nCurIndex%>)" OnKeyDown="OnDirectionKey_MField(<%=nCurIndex%>, <%=nDataCounter%>, <%=i%>); ChangeFocus(<%=nCurIndex+2%>)"  onkeyup="CallInputBox(<%=nCurIndex%>)" onfocusin="SetFocusStyle(this, true, false)" onfocusout="SetFocusStyle(this, false, false)" /></td>
                                         <%
                                             nCurIndex = nCurIndex + 1
                                         %>
@@ -833,106 +897,105 @@
         </table>
     </td>
 </tr>
-
 <%    
     '查核定過的單號
     dim TextString
-    call ShowText(conn,TextString)	
-    
+    call ShowText(conn, TextString)
 %>
-
-<script lanuage="javascript">
-<%= TextString %>
-</script>
-
-<tr> 
-    <td> 
-        <table cellspacing=0 cellpadding=0 width="100%" border=0>
-            <tbody> 
-               <tr bgcolor=#3366cc > 
-                    <td colspan="9" width="100%" valign=center align=middle bgcolor=#3366cc> 
-                    <input type="hidden" name="">         <!--*只為了加一個欄位*-->
-                    <input type="hidden" name="">         <!--*只為了加一個欄位*-->
-                    <input type="hidden" name="">         <!--*只為了加一個欄位*-->
-                        <div align="center">
-                        
-                    <%
-                        if bIsChecked = 0 and nDataCounter<>0 then
-                    %>
-                            <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2" value="核定" name="CheckIn" OnKeyDown="CheckInByKeyPress()" OnMouseUp="OnCheckIn()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)"> 
-                            <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2" value="儲存" name="Save" OnKeyDown="SaveByKeyPress()" OnMouseUp="OnSave()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
-                            <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2" value="移動" name="Move" OnKeyDown="MoveByKeyPress()" OnMouseUp="OnMove()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
-                            <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2" value="刪除" name="Delete" OnKeyDown="DeleteByKeyPress()" OnMouseUp="OnDelete()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
-                            <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2" value="回上一頁" name="ReSearch" OnKeyDown="ReSearchByKeyPress()" OnMouseUp="OnReSearch()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
-                    <%
-                        elseif bIsChecked = 1 and nDataCounter<>0 then
-                    %>
-                            <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2" value="取消核定" name="CheckIn" OnKeyDown="DelCheckInByKeyPress()" OnMouseUp="OnDelCheckIn()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
-                            <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2" value="已核定，回上一頁" name="ReSearch" OnKeyDown="ReSearchByKeyPress()" OnMouseUp="OnReSearch()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">                            
-                    <%
-                        else
-                    %>
-                            <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2" value="回上一頁" name="ReSearch" OnKeyDown="ReSearchByKeyPress()" OnMouseUp="OnReSearch()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
-                    <%
-                        end if
-                    %>
-                            
-                        </div>
-                    </td>
-                </tr>
-                <tr> 
-                    <td width=1><img height=38 src="../image/box1.gif" width=20></td>
-                    <td width=1><img height=38 src="../image/box2.gif" width=9></td>
-                    <td valign=center align=middle width=1 background="../image/box3.gif">&nbsp; </td>
-                    <td width=1><img height=38 src="../image/box4.gif" width=27></td>
-                    <td style="text-align: center; width: 25%; background-color: #3366cc">
-						<span style="color: #fff;">儲存(F2)</span>
-                    </td>
-					<td style="text-align: center; width: 25%; background-color: #3366cc">
-						<a href="../FreightForm/FFfun01a.asp?Status=Add&VesselID=<%=szVesselListID%>&PrevFoundID=<%=szPrevFoundID%>" style="color: #fff;">
-							<span>倉單輸入(F8)</span>
-						</a>
-					</td>
-					<td style="text-align: center; width: 25%; background-color: #3366cc">
-						<a href="../FaxService/FSfun03c.asp?ReportType=1&VesselLine=<%=szVesselLine%>&VesselListID=<%=szVesselListID%>" style="color: #fff;">
-							<span>總表查詢(Ctrl+Z)</span>
-						</a>
-					</td>
-					<td style="text-align: center; width: 25%; background-color: #3366cc">
-						<a href="../FaxService/FSfun03c.asp?ReportType=2&VesselLine=<%=szVesselLine%>&VesselListID=<%=szVesselListID%>" style="color: #fff;">
-							<span>尺寸資料查詢(Ctrl+X)</span>
-						</a>
-                    </td>
-                    <td width=1><img height=38 src="../image/box5.gif" width=20></td>
-                </tr>
-            </tbody>
-        </table> 
-    </td>
-</tr>
-
-</table> 
+    <tr>
+        <td>
+            <table style="width: 100%; border-width: 0;" cellspacing="0" cellpadding="0">
+                <tbody>
+                    <tr style="background-color: #3366cc;">
+                        <td colspan="9" style="width: 100%; vertical-align: middle; text-align: center; background-color: #3366cc;">
+                            <input type="hidden" name="" /><!--*只為了加一個欄位*-->
+                            <input type="hidden" name="" /><!--*只為了加一個欄位*-->
+                            <input type="hidden" name="" /><!--*只為了加一個欄位*-->
+                            <div style="margin: 0 auto; text-align: center;">
+<%
+    if bIsChecked = 0 and nDataCounter<>0 then
+%>
+                                <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2px" value="核定" name="CheckIn" OnKeyDown="CheckInByKeyPress()" OnMouseUp="OnCheckIn()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)"> 
+                                <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2px" value="儲存" name="Save" OnKeyDown="SaveByKeyPress()" OnMouseUp="OnSave()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
+                                <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2px" value="移動" name="Move" OnKeyDown="MoveByKeyPress()" OnMouseUp="OnMove()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
+                                <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2px" value="刪除" name="Delete" OnKeyDown="DeleteByKeyPress()" OnMouseUp="OnDelete()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
+                                <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2px" value="回上一頁" name="ReSearch" OnKeyDown="ReSearchByKeyPress()" OnMouseUp="OnReSearch()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
+<%
+    elseif bIsChecked = 1 and nDataCounter<>0 then
+%>
+                                <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2px" value="取消核定" name="CheckIn" OnKeyDown="DelCheckInByKeyPress()" OnMouseUp="OnDelCheckIn()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
+                                <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2px" value="已核定，回上一頁" name="ReSearch" OnKeyDown="ReSearchByKeyPress()" OnMouseUp="OnReSearch()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">                            
+<%
+    else
+%>
+                                <input type="button" style="background-color:#C9E0F8;border-style: outset; border-width: 2px" value="回上一頁" name="ReSearch" OnKeyDown="ReSearchByKeyPress()" OnMouseUp="OnReSearch()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)">
+<%
+    end if
+%>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr> 
+                        <td style="width: 1px;"><img src="../image/box1.gif" height="38" width="20" /></td>
+                        <td style="width: 1px;"><img src="../image/box2.gif" height="38" width="9" /></td>
+                        <td style="width: 1px; vertical-align: middle; text-align: center; background-image: url(../image/box3.gif)">&nbsp;</td>
+                        <td style="width: 1px;"><img height=38 src="../image/box4.gif" width=27></td>
+                        <td style="text-align: center; width: 25%; background-color: #3366cc">
+						    <span style="color: #fff;">儲存(F2)</span>
+                        </td>
+					    <td style="text-align: center; width: 25%; background-color: #3366cc">
+						    <a href="../FreightForm/FFfun01a.asp?Status=Add&VesselID=<%=szVesselListID%>&PrevFoundID=<%=szPrevFoundID%>" style="color: #fff;">
+							    <span>倉單輸入(F8)</span>
+						    </a>
+					    </td>
+					    <td style="text-align: center; width: 25%; background-color: #3366cc">
+						    <a href="../FaxService/FSfun03c.asp?ReportType=1&VesselLine=<%=szVesselLine%>&VesselListID=<%=szVesselListID%>" style="color: #fff;">
+    							<span>總表查詢(Ctrl+Z)</span>
+						    </a>
+					    </td>
+					    <td style="text-align: center; width: 25%; background-color: #3366cc">
+						    <a href="../FaxService/FSfun03c.asp?ReportType=2&VesselLine=<%=szVesselLine%>&VesselListID=<%=szVesselListID%>" style="color: #fff;">
+							    <span>尺寸資料查詢(Ctrl+X)</span>
+						    </a>
+                        </td>
+                        <td style="width: 1px;"><img src="../image/box5.gif" height="38" width="20" /></td>
+                    </tr>
+                </tbody>
+            </table> 
+        </td>
+    </tr>
+</table>
 <%
     rs.close
     conn.close 
     
-    set rs=nothing
-    set conn=nothing
-%> 
-<input type="hidden" name="Status" value=<%=szStatus%> />         <!--狀態-->
-<input type="hidden" name="VesselID" value=<%=szVesselIDTmp%> />  <!--船碼-->
-<input type="hidden" name="DataCounter" value=<%=nDataCounter%> />  <!--筆數-->
-<input type="hidden" name="StoreSum_Piece" value=<%=nStoreSum_PieceTmp%> />         <!--總件數-->
-<input type="hidden" name="StoreSum_Weight" value=<%=fStoreSum_WeightTmp%> />       <!--總重量-->
-<input type="hidden" name="StoreSum_Forestry" value=<%=fStoreSum_ForestryTmp%> />   <!--總才積-->
-<input type="hidden" name="StoreSum_Volume" value=<%=fStoreSum_VolumeTmp%> />       <!--總體積-->
-<input type="hidden" name="VesselListID" value=<%=szVesselListID%> />  <!--航次-->
-<input type="hidden" name="VesselLine" value=<%=szVesselLine%> />  <!--航線-->
-<input type="hidden" name="IsChecked" value=<%=bIsChecked%> />  <!--核定與否-->
-<input type="hidden" name="PrevFoundID" value=<%=szPrevFoundID%> />  <!---->
-<input type="hidden" name="PageNum" value=<%=nPageNum%> />  <!---->
-<input type="hidden" name="TotalPageNum" value=<%=nTotalPage%> />  <!---->
-
-
+    set rs = nothing
+    set conn = nothing
+%>
+<%= "<script type=""text/javascript"">" & TextString & "</script>" %>
+    <!--狀態-->
+    <input type="hidden" name="Status" value=<%=szStatus%> />
+    <!--船碼-->
+    <input type="hidden" name="VesselID" value=<%=szVesselIDTmp%> />
+    <!--筆數-->
+    <input type="hidden" name="DataCounter" value=<%=nDataCounter%> />
+    <!--總件數-->
+    <input type="hidden" name="StoreSum_Piece" value=<%=nStoreSum_PieceTmp%> />
+    <!--總重量-->
+    <input type="hidden" name="StoreSum_Weight" value=<%=fStoreSum_WeightTmp%> />
+    <!--總才積-->
+    <input type="hidden" name="StoreSum_Forestry" value=<%=fStoreSum_ForestryTmp%> />
+    <!--總體積-->
+    <input type="hidden" name="StoreSum_Volume" value=<%=fStoreSum_VolumeTmp%> />
+    <!--航次-->
+    <input type="hidden" name="VesselListID" value=<%=szVesselListID%> />
+    <!--航線-->
+    <input type="hidden" name="VesselLine" value=<%=szVesselLine%> />
+    <!--核定與否-->
+    <input type="hidden" name="IsChecked" value=<%=bIsChecked%> />
+    <input type="hidden" name="PrevFoundID" value=<%=szPrevFoundID%> />
+    <input type="hidden" name="PageNum" value=<%=nPageNum%> />
+    <input type="hidden" name="TotalPageNum" value=<%=nTotalPage%> />
 </form>
 </body>
 </html>

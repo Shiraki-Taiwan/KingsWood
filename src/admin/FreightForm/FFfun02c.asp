@@ -213,6 +213,28 @@
     
     '=========核定=========
     elseif szStatus = "CheckIn" then
+        '修改細項資料
+        for i = 0 to nDataCounter-1
+            if nPageNo(i) <> 0 and nSN(i) <> "" then
+              	sql = "update FreightForm set ID = '" + szID(i) + "', Storehouse = '" + szStorehouse(i) &_
+              	      "', Board = " + CStr(nBoard(i)) + ", IsPL = " + CStr(bIsPL(i)) + ", Piece = " + CStr(nPiece(i)) &_
+              	      ", PackageStyleID = '" + szPackageStyleID(i) + "', Length = " + CStr(fLength(i)) &_
+              	      ", Width = " + CStr(fWidth(i)) + ", Height = " + CStr(fHeight(i)) + ", Volume = " + CStr(fVolume(i)) &_
+              	      ", Weight = " + CStr(fWeight(i)) + ", TotalWeight = " + CStr(fTotalWeight(i)) &_
+              	      ", PageNo = '" + CStr(nPageNo(i)) + "'"
+              	      
+              	sql = sql + ", PredictPiece = " + CStr(nPredictPiece)
+              	sql = sql + ", PredictVolume = " + CStr(fPredictVolume)
+              	sql = sql + ", PredictForestry =" + CStr(fPredictForestry)
+                sql = sql + ", PredictWeight =" + CStr(fPredictWeight)
+              	sql = sql + ", NeededForestry = " + CStr(fNeededForestry)
+              	
+              	sql = sql + " where SN = " + nSN(i)
+               
+                conn.execute(sql)
+            end if
+        next
+      	
         '查攬貨商資料
         sql = "select OwnerID from FormToOwner where FormID = '" + szFormID + "'"
         set rs = conn.execute(sql)
@@ -225,7 +247,6 @@
             'response.write("<meta http-equiv=""refresh"" content=""3; url=FFfun02a.asp""><center>請先設定相對應的""攬貨商-單號對照資料""</center>")
             'response.end
         end if
-        
         
         '寫入總資料
         sql = "select ID from StoreSum where ID='" + szFormID + "' and VesselListID = '" + szVesselListID + "'"           

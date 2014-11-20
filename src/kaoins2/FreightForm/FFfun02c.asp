@@ -4,7 +4,7 @@
 
 <%
 	'02-May2005: 權限檢查
-	if Session.Contents("GroupType@KAOINS2") < 0 then
+	if Session.Contents("GroupType@ADMIN") < 0 then
 		response.redirect "../Login/Login.asp"
 	end if
 
@@ -27,6 +27,7 @@
     fStoreSum_Weight        = CDbl(request("StoreSum_Weight"))    '總重量 
     fStoreSum_Forestry      = CDbl(request("StoreSum_Forestry"))  '總才積 
     fStoreSum_Volume        = CDbl(request("StoreSum_Volume"))    '總體積 
+    ZeroPiece               = request("ZeroPiece")
     
     if nStoreSum_Piece = "" then
         nStoreSum_Piece = 0
@@ -197,7 +198,7 @@
               	sql = sql + ", PredictPiece = " + CStr(nPredictPiece)
               	sql = sql + ", PredictVolume = " + CStr(fPredictVolume)
               	sql = sql + ", PredictForestry =" + CStr(fPredictForestry)
-                'sql = sql + ", PredictWeight =" + CStr(fPredictWeight)
+                sql = sql + ", PredictWeight =" + CStr(fPredictWeight)
               	sql = sql + ", NeededForestry = " + CStr(fNeededForestry)
               	
               	sql = sql + " where SN = " + nSN(i)
@@ -212,6 +213,28 @@
     
     '=========核定=========
     elseif szStatus = "CheckIn" then
+        '修改細項資料
+        for i = 0 to nDataCounter-1
+            if nPageNo(i) <> 0 and nSN(i) <> "" then
+              	sql = "update FreightForm set ID = '" + szID(i) + "', Storehouse = '" + szStorehouse(i) &_
+              	      "', Board = " + CStr(nBoard(i)) + ", IsPL = " + CStr(bIsPL(i)) + ", Piece = " + CStr(nPiece(i)) &_
+              	      ", PackageStyleID = '" + szPackageStyleID(i) + "', Length = " + CStr(fLength(i)) &_
+              	      ", Width = " + CStr(fWidth(i)) + ", Height = " + CStr(fHeight(i)) + ", Volume = " + CStr(fVolume(i)) &_
+              	      ", Weight = " + CStr(fWeight(i)) + ", TotalWeight = " + CStr(fTotalWeight(i)) &_
+              	      ", PageNo = '" + CStr(nPageNo(i)) + "'"
+              	      
+              	sql = sql + ", PredictPiece = " + CStr(nPredictPiece)
+              	sql = sql + ", PredictVolume = " + CStr(fPredictVolume)
+              	sql = sql + ", PredictForestry =" + CStr(fPredictForestry)
+                sql = sql + ", PredictWeight =" + CStr(fPredictWeight)
+              	sql = sql + ", NeededForestry = " + CStr(fNeededForestry)
+              	
+              	sql = sql + " where SN = " + nSN(i)
+               
+                conn.execute(sql)
+            end if
+        next
+      	
         '查攬貨商資料
         sql = "select OwnerID from FormToOwner where FormID = '" + szFormID + "'"
         set rs = conn.execute(sql)
@@ -225,12 +248,16 @@
             'response.end
         end if
         
-        
         '寫入總資料
         sql = "select ID from StoreSum where ID='" + szFormID + "' and VesselListID = '" + szVesselListID + "'"           
         set rs = conn.execute(sql)
-        
-        if rs.eof then
+        if ZeroPiece=1 then '件數=0
+          rs.close
+          conn.close 
+          set rs=nothing
+          set conn=nothing        	
+        	response.write "<font size=6><br><meta http-equiv=""refresh"" content=""1; url=FFfun02b.asp?VesselListID=" + szVesselListID + "&ID=" + szFormID + """><center>核定失敗:件數為零</center>" 
+        elseif rs.eof then
             sql = "insert into StoreSum (ID, Piece, Forestry, Weight, Volume, VesselListID, FreightOwnerID, IsChecked) " &_
                   "values ('" + szFormID + "'," + CStr(nStoreSum_Piece) + "," + CStr(fStoreSum_Forestry) + "," &_
                   CStr(fStoreSum_Weight) + "," + CStr(fStoreSum_Volume) + ",'" + szVesselListID + "','" + szFreightOwnerID + "', TRUE )"
