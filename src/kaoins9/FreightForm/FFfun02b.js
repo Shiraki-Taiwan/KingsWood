@@ -159,7 +159,7 @@ function OnMove() {
     var i, nDataCounter, szStr1, szStr2, iIndex, nCounter;
     nDataCounter = document.form.DataCounter.value;
 
-    iIndex = 6;
+    iIndex = 7;
     nCounter = 0;
     szStr2 = "";
 

@@ -179,3 +179,186 @@ function CheckForbiddenKey_UpAndDown() {
     }
 
 }
+
+function VolumeCalculator2(a_nIndex) {
+
+    var fVolumn = 0;
+    var DivNum = 1000000;
+    var nBoard = 1, nPiece = 1, nRow = a_nIndex * nFieldDiff;
+    var nBoardValue =
+        document.form[11 + nRow].value;
+    var bIsPL =
+        document.form[12 + nRow].value;
+    var nPieceValue =
+        document.form[13 + nRow].value;
+    var nLength =
+        document.form[15 + nRow].value
+    var nWidth =
+        document.form[16 + nRow].value
+    var nHeight =
+        document.form[17 + nRow].value
+
+    if (nBoardValue == "") { nBoard = 1 }
+    else { nBoard = parseInt(nBoardValue) }
+
+    if (nPieceValue == "") { nPiece = 1 }
+    else { nPiece = parseInt(nPieceValue) }
+
+    if (nLength != "" && nWidth != "" && nHeight != "") {
+        fVolumn = nLength * nWidth * nHeight / DivNum;
+
+        if (bIsPL == "0") {
+            // 不是堆量，要乘件數
+            fVolumn = fVolumn * nPiece;
+        } else {
+            // 堆量, 要乘板數
+            fVolumn = fVolumn * nBoard;
+        }
+        document.form[18 + nRow].value = formatFloat(fVolumn, 2);
+
+        ChangeTextColor2(a_nIndex, nLength, nWidth, nHeight, fVolumn, bIsPL);
+    }
+
+    // 09-May2005: update上方的總件數與總體積
+    UpdateTotalPieceAndVolume();
+}
+
+// -----------------------update上方的總件數與總體積----------------------------------------
+function UpdateTotalPieceAndVolume() {
+    var i, nPieceSum = 0, fVolumeSum = 0, nPiece, bSkipAnyPiece = false;
+
+    for (i = 0; i < document.form.DataCounter.value; i++) {
+        nPiece = document.form[13 + i * nFieldDiff].value;
+
+        if (nPiece == "") {
+            nPiece = 0
+            bSkipAnyPiece = true
+        }
+
+        nPieceSum += parseInt(nPiece);
+        fVolumeSum += parseInt(document.form[18 + i * nFieldDiff].value);
+    }
+    document.form.StoreSum_Piece.value = nPieceSum;
+
+    if (bSkipAnyPiece) {
+        document.all.td_TotalPiece.innerHTML = '<font size="6"></font>';
+        document.all.td_TotalVolume.innerHTML = '<font size="6"></font>';
+    } else {
+        document.all.td_TotalPiece.innerHTML = '<font size="6">' + document.form.StoreSum_Piece.value + '</font>';
+
+        if (document.form.NeededForestry.value == "") {
+            fVolumeSum = formatFloat(fVolumeSum, 2);
+            document.form.StoreSum_Volume.value = fVolumeSum;
+            document.all.td_TotalVolume.innerHTML = "<font size=6>" + document.form.StoreSum_Volume.value + "</font>";
+        } else {
+            document.all.td_TotalVolume.innerHTML = "<font size=6 color=#FF0000>" + formatFloat(document.form.NeededForestry.value, 2) + "</font>";
+        }
+    }
+}
+function isNumber(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
+function formatFloat(num, pos) {
+    var size = Math.pow(10, pos);
+    return Math.round(num * size) / size;
+}
+function ChangeTextColor2(a_nIndex, nLength, nWidth, nHeight, fVolume, bIsPLValue) {
+    var ColorYellow = "#FFFFA0", ColorWhite = "#ffffff", ColorPink = "#FFC8FF";
+    var bChangeBg = 0, bIsPL;
+
+    if (bIsPLValue == "") { bIsPL = 0 }
+    else { bIsPL = Boolean(bIsPLValue) }
+
+    // 若有板數,體積先除以板數
+    var nBoard;
+
+    if (document.form[11 + a_nIndex * nFieldDiff].value != "") {
+        nBoard = document.form[11 + a_nIndex * nFieldDiff].value
+
+        if (isNumber(nBoard)) {
+            nBoard = parseInt(nBoard);
+        } else {
+            // just for aborting error
+            nBoard = 1;
+        }
+        if (nBoard > 0) {
+            fVolume = fVolume / nBoard;
+        }
+    }
+
+    // 體積大於3.8, 或小於0.1 用不同頻色表示
+    var ColorVolume = "";
+    if ((fVolume > 3.8) || (fVolume < 0.1)) {
+        bChangeBg = 1; ColorVolume = ColorPink;
+    }
+
+    // 27-Apr2005: 若有堆量, 且長寬高小於30cm, 變色
+    var ColorLength = "";
+    if (nLength > 600 || nLength < 10 || (bIsPL = 1 && nLength < 30)) {
+        bChangeBg = 1; ColorLength = ColorPink;
+    }
+
+    var ColorWidth = "";
+    if (nWidth > 600 || nWidth < 10 || (bIsPL = 1 && nWidth < 30)) {
+        bChangeBg = 1; ColorWidth = ColorPink;
+    }
+
+    var ColorHeight = "";
+    if (nHeight > 226 || nHeight < 10 || (bIsPL = 1 && nHeight < 30)) {
+        bChangeBg = 1; ColorHeight = ColorPink;
+    }
+
+    if (bChangeBg == 1) {
+        var nRow = a_nIndex * nFieldDiff;
+
+        document.form[8 + nRow].style.backgroundColor = ColorYellow;
+        document.form[9 + nRow].style.backgroundColor = ColorYellow;
+        document.form[10 + nRow].style.backgroundColor = ColorYellow;
+        document.form[11 + nRow].style.backgroundColor = ColorYellow;
+        document.form[12 + nRow].style.backgroundColor = ColorYellow;
+        document.form[13 + nRow].style.backgroundColor = ColorYellow;
+        document.form[14 + nRow].style.backgroundColor = ColorYellow;
+
+        if (ColorLength == "") {
+            document.form[15 + nRow].style.backgroundColor = ColorYellow;
+        } else {
+            document.form[15 + nRow].style.backgroundColor = ColorLength;
+        }
+
+        if (ColorWidth == "") {
+            document.form[16 + nRow].style.backgroundColor = ColorYellow;
+        } else {
+            document.form[16 + nRow].style.backgroundColor = ColorWidth;
+        }
+
+        if (ColorHeight == "") {
+            document.form[17 + nRow].style.backgroundColor = ColorYellow;
+        } else {
+            document.form[17 + nRow].style.backgroundColor = ColorHeight;
+        }
+
+        if (ColorVolume == "") {
+            document.form[18 + nRow].style.backgroundColor = ColorYellow;
+        } else {
+            document.form[18 + nRow].style.backgroundColor = ColorPink;
+        }
+
+        document.form[19 + nRow].style.backgroundColor = ColorYellow;
+        document.form[20 + nRow].style.backgroundColor = ColorYellow;
+    } else {
+        var nRow = a_nIndex * nFieldDiff;
+        document.form[8 + nRow].style.backgroundColor = ColorWhite
+        document.form[9 + nRow].style.backgroundColor = ColorWhite
+        document.form[10 + nRow].style.backgroundColor = ColorWhite
+        document.form[11 + nRow].style.backgroundColor = ColorWhite
+        document.form[12 + nRow].style.backgroundColor = ColorWhite
+        document.form[13 + nRow].style.backgroundColor = ColorWhite
+        document.form[14 + nRow].style.backgroundColor = ColorWhite
+        document.form[15 + nRow].style.backgroundColor = ColorWhite
+        document.form[16 + nRow].style.backgroundColor = ColorWhite
+        document.form[17 + nRow].style.backgroundColor = ColorWhite
+        document.form[18 + nRow].style.backgroundColor = ColorWhite
+        document.form[19 + nRow].style.backgroundColor = ColorWhite
+        document.form[20 + nRow].style.backgroundColor = ColorWhite
+    }
+}

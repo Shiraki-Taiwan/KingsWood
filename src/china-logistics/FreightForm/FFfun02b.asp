@@ -9,7 +9,7 @@
     <script type="text/javascript" src="FFfun02b.js"></script>
     <script type="text/javascript" src="FFShareFun.js"></script>
     <script type="text/vbscript" src="FFShareFun.vbs"></script>
-	<script type="text/javascript">
+	<!--<script type="text/javascript">
 		var CallInputBox = function (x) { };
 		var OnPieceFocus = function (x) { };
 		var SimpleCalculator = function (a_index) { };
@@ -30,7 +30,7 @@
 			//    document.form(19+a_index*nFieldDiff).value = MyFormatNumber(nPiece * nWeight, 1)
 			//End If
 		};
-	</script>
+	</script>-->
 	<style type="text/css">
 		body {
 			margin: 0;
