@@ -251,10 +251,10 @@
 					</td>
 				</tr>
 				<tr valign="middle">
-					<td width="1%"></td>
-					<td width="20%" style="font-family: Arial; font-size: 14.0pt">船名：<%=szVesselName%></td>
-					<td width="20%" style="font-family: Arial; font-size: 14.0pt">航次：<%=szVesselList%></td>
-					<td width="69%" style="font-family: Arial; font-size: 14.0pt">結關日期：<%=szVesselDate%></td>
+					<td style="width: 1%;"></td>
+					<td style="width: 30%; font-family: Arial; font-size: 14.0pt">船名：<%=szVesselName%></td>
+					<td style="width: 20%; font-family: Arial; font-size: 14.0pt">航次：<%=szVesselList%></td>
+					<td style="width: 49%; font-family: Arial; font-size: 14.0pt">結關日期：<%=szVesselDate%></td>
 				</tr>
 				<tr>
 					<td colspan="4" align="center">
@@ -312,7 +312,7 @@
 						sql		= sql + " WHERE FreightForm.VesselID = '" + szVesselListID + "' "
 						sql		= sql + "   AND FormToOwner.FormID = FreightForm.ID "
 					'	sql		= sql + "   AND FormToOwner.OwnerID = '" + szOwner + "' "
-						sql		= sql + "   AND FormToOwner.VesselLine = '" + szVesselLine + "' "
+					'	sql		= sql + "   AND FormToOwner.VesselLine = '" + szVesselLine + "' "
 
 						if r_szOwnerList = "" then
 							sql	= sql + "   AND FormToOwner.OwnerID = '" + szOwner + "' "
@@ -653,9 +653,9 @@
 					</tr>
 					<tr style="font-family: Arial; font-size: 14.0pt">
 						<td style="width: 1%;"></td>
-						<td style="width: 20%;">船名：<%=szVesselName%></td>
+						<td style="width: 30%;">船名：<%=szVesselName%></td>
 						<td style="width: 20%;">航次：<%=szVesselList%></td>
-						<td style="width: 69%;">結關日期：<%=szVesselDate%></td>
+						<td style="width: 49%;">結關日期：<%=szVesselDate%></td>
 					</tr>
 				</table>
 			</div>
@@ -715,51 +715,61 @@
 			set rs = nothing                            
                         
 			if nGroupType = 1 then
-                If hasVesselLine Then
-				    sql = "SELECT ID, IsChecked, NeededForestry, SUM(Piece) AS TotalPiece, SUM(Volume) AS TotalVolume,"
-				    sql = sql + " SUM(TotalWeight) AS TotalWeightSum, SUM(Board) AS TotalBoard "
-				    sql = sql + " FROM FreightForm LEFT OUTER JOIN FormToOwner ON FormToOwner.FormID = FreightForm.ID "
-                    sql = sql + " WHERE VesselID = '" + szVesselListID + "' AND (FormToOwner.VesselLine = '" + szVesselLine + "' OR FormToOwner.VesselLine IS NULL)"
-                Else
-				    sql = "SELECT ID, IsChecked, NeededForestry, SUM(Piece) AS TotalPiece, SUM(Volume) AS TotalVolume,"
-				    sql = sql + " SUM(TotalWeight) AS TotalWeightSum, SUM(Board) AS TotalBoard "
-				    sql = sql + " FROM FreightForm "
-                    sql = sql + " WHERE VesselID = '" + szVesselListID + "' "
-                End If
+                'If hasVesselLine Then
+				'    sql = "SELECT ID, IsChecked, NeededForestry, SUM(Piece) AS TotalPiece, SUM(Volume) AS TotalVolume,"
+				'    sql = sql + " SUM(TotalWeight) AS TotalWeightSum, SUM(Board) AS TotalBoard "
+				'    sql = sql + " FROM FreightForm LEFT OUTER JOIN FormToOwner ON FormToOwner.FormID = FreightForm.ID "
+                '    sql = sql + " WHERE VesselID = '" + szVesselListID + "' AND (FormToOwner.VesselLine = '" + szVesselLine + "' OR FormToOwner.VesselLine IS NULL)"
+                'Else
+				'    sql = "SELECT ID, IsChecked, NeededForestry, SUM(Piece) AS TotalPiece, SUM(Volume) AS TotalVolume,"
+				'    sql = sql + " SUM(TotalWeight) AS TotalWeightSum, SUM(Board) AS TotalBoard "
+				'    sql = sql + " FROM FreightForm "
+                '    sql = sql + " WHERE VesselID = '" + szVesselListID + "' "
+                'End If
+    
+				sql = "SELECT ID, IsChecked, NeededForestry, SUM(Piece) AS TotalPiece, SUM(Volume) AS TotalVolume,"
+				sql = sql + " SUM(TotalWeight) AS TotalWeightSum, SUM(Board) AS TotalBoard "
+				sql = sql + " FROM FreightForm "
+                sql = sql + " WHERE VesselID = '" + szVesselListID + "' "
 
 				if szStartIDTmp(i) <> "" and szEndIDTmp(i) <> "" then
-				   sql = sql + " AND FreightForm.ID >= '" + szStartIDTmp(i) + "' and FreightForm.ID <= '" + szEndIDTmp(i) + "' "
+				   sql = sql + " AND ID >= '" + szStartIDTmp(i) + "' and ID <= '" + szEndIDTmp(i) + "' "
 				end if
+				sql = sql + " GROUP BY ID, IsChecked, NeededForestry "
+				sql = sql + " ORDER BY ID"
 			elseif nGroupType = 3 then
 				sql		= ""
-				sql		= sql + "SELECT FreightForm.ID, FreightForm.IsChecked, FreightForm.NeededForestry, "
-				sql		= sql + "       SUM(FreightForm.Piece) as TotalPiece, "
-				sql		= sql + "       SUM(FreightForm.Volume) as TotalVolume, "
-				sql		= sql + "       SUM(FreightForm.TotalWeight) as TotalWeightSum, "
-				sql		= sql + "       SUM(FreightForm.Board) as TotalBoard, "
-				sql		= sql + "       iif(isnull(FreightOwner.ID), '', FreightOwner.ID) as FO_ID, "
-				sql		= sql + "       iif(isnull(FreightOwner.Name), '', FreightOwner.Name) as FO_Name, "
-				sql		= sql + "       iif(isnull(FormToOwner.VesselLine), '', FormToOwner.VesselLine) as VesselLine "
-				sql		= sql + "  FROM ((FreightForm "
-				sql		= sql + "  LEFT OUTER JOIN FormToOwner ON FormToOwner.FormID = FreightForm.ID) "
-				sql		= sql + "  LEFT OUTER JOIN FreightOwner ON FormToOwner.OwnerID = FreightOwner.ID) "
-				sql		= sql + " WHERE FreightForm.VesselID = '" + szVesselListID + "' "
-				sql		= sql + "   AND (FormToOwner.VesselLine = '" + szVesselLine + "' OR FormToOwner.VesselLine IS NULL) "
+				sql		= sql + "SELECT ID, IsChecked, NeededForestry, "
+				sql		= sql + "       SUM(Piece) as TotalPiece, "
+				sql		= sql + "       SUM(Volume) as TotalVolume, "
+				sql		= sql + "       SUM(TotalWeight) as TotalWeightSum, "
+				sql		= sql + "       SUM(Board) as TotalBoard, "
+				sql		= sql + "       FO_ID, "
+				sql		= sql + "       FO_Name "
+				sql		= sql + "  FROM ( "
+                sql		= sql + "       SELECT DISTINCT FreightForm.*, FormToOwner.OwnerID, iif(isnull(FreightOwner.ID), '', FreightOwner.ID) as FO_ID, iif(isnull(FreightOwner.Name), '', FreightOwner.Name) as FO_Name "
+				sql		= sql + "         FROM ((FreightForm "
+				sql		= sql + "         LEFT JOIN FormToOwner ON FormToOwner.FormID = FreightForm.ID) "
+				sql		= sql + "         LEFT JOIN FreightOwner ON FormToOwner.OwnerID = FreightOwner.ID) "
+				sql		= sql + "        WHERE FreightForm.VesselID = '" + szVesselListID + "' "
+                sql		= sql + " ) AS TEMP "
+                sql		= sql + " GROUP BY ID, IsChecked, NeededForestry, FO_ID, FO_Name "
+				sql		= sql + " ORDER BY FO_ID DESC"
 			else
 				sql		= ""
-				sql		= sql + "SELECT FreightForm.ID, FreightForm.IsChecked, FreightForm.NeededForestry, "
-				sql		= sql + "       SUM(FreightForm.Piece) as TotalPiece, "
-				sql		= sql + "       SUM(FreightForm.Volume) as TotalVolume, "
-				sql		= sql + "       SUM(FreightForm.TotalWeight) as TotalWeightSum, "
-				sql		= sql + "       SUM(FreightForm.Board) as TotalBoard, "
-				sql		= sql + "       iif(isnull(FreightOwner.ID), '', FreightOwner.ID) as FO_ID, "
-				sql		= sql + "       iif(isnull(FreightOwner.Name), '', FreightOwner.Name) as FO_Name, "
-				sql		= sql + "       iif(isnull(FormToOwner.VesselLine), '', FormToOwner.VesselLine) as VesselLine "
-				sql		= sql + "  FROM ((FreightForm "
-				sql		= sql + "  LEFT OUTER JOIN FormToOwner ON FormToOwner.FormID = FreightForm.ID) "
-				sql		= sql + "  LEFT OUTER JOIN FreightOwner ON FormToOwner.OwnerID = FreightOwner.ID) "
-				sql		= sql + " WHERE FreightForm.VesselID = '" + szVesselListID + "' "
-				sql		= sql + "   AND (FormToOwner.VesselLine = '" + szVesselLine + "' OR FormToOwner.VesselLine IS NULL) "
+				sql		= sql + "SELECT ID, IsChecked, NeededForestry, "
+				sql		= sql + "       SUM(Piece) as TotalPiece, "
+				sql		= sql + "       SUM(Volume) as TotalVolume, "
+				sql		= sql + "       SUM(TotalWeight) as TotalWeightSum, "
+				sql		= sql + "       SUM(Board) as TotalBoard, "
+				sql		= sql + "       FO_ID, "
+				sql		= sql + "       FO_Name "
+				sql		= sql + "  FROM ( "
+                sql		= sql + "       SELECT DISTINCT FreightForm.*, FormToOwner.OwnerID, iif(isnull(FreightOwner.ID), '', FreightOwner.ID) as FO_ID, iif(isnull(FreightOwner.Name), '', FreightOwner.Name) as FO_Name "
+				sql		= sql + "         FROM ((FreightForm "
+				sql		= sql + "         LEFT JOIN FormToOwner ON FormToOwner.FormID = FreightForm.ID) "
+				sql		= sql + "         LEFT JOIN FreightOwner ON FormToOwner.OwnerID = FreightOwner.ID) "
+				sql		= sql + "        WHERE FreightForm.VesselID = '" + szVesselListID + "' "
 	
 				if r_szOwnerList = "" then
 					if szOwner = "" then
@@ -770,16 +780,12 @@
 				else
 					sql	= sql + "   AND FreightOwner.ID IN (" + r_szOwnerList + ") "
 				end if
+    
+                sql		= sql + " ) AS TEMP "
+                sql		= sql + " GROUP BY ID, IsChecked, NeededForestry, FO_ID, FO_Name "
+				sql		= sql + " ORDER BY FO_ID DESC"
 			end if
-                        
-			if nGroupType = 1 then
-				sql = sql + " GROUP BY FreightForm.ID, FreightForm.IsChecked, FreightForm.NeededForestry "
-				sql = sql + " ORDER BY FreightForm.ID"
-			else
-				sql = sql + " GROUP BY FreightForm.ID, FreightForm.IsChecked, FreightForm.NeededForestry, FreightOwner.ID, FreightOwner.Name, FormToOwner.VesselLine "
-				sql = sql + " ORDER BY FreightOwner.ID DESC"
-			end if
-		
+
 			set rs = conn.execute(sql) 
 	
 			nCurIndex = 0
@@ -805,10 +811,10 @@
 			 	nCurIndex = nCurIndex + 1
 
 				if nGroupType = 1 then
-					sql = "select FreightOwner.ID, FreightOwner.Name from FreightOwner, FormToOwner"
-					sql = sql + " where FormToOwner.FormID = '" + rs("ID") + "'"
-					sql = sql + " and FormToOwner.OwnerID = FreightOwner.ID"
-					sql = sql + " and FormToOwner.VesselLine = '" + szVesselLine + "'"
+					sql = "SELECT DISTINCT FreightOwner.ID, FreightOwner.Name FROM FreightOwner, FormToOwner"
+					sql = sql + " WHERE FormToOwner.FormID = '" + rs("ID") + "' "
+					sql = sql + " AND FormToOwner.OwnerID = FreightOwner.ID "
+				'	sql = sql + " AND FormToOwner.VesselLine = '" + szVesselLine + "' "
 					
 					set rs1 = conn.execute(sql)
 					
@@ -946,7 +952,7 @@
 
 		if nGroupType = 1 then
 %>
-				<tr>
+				<!--<tr>
 					<td></td>
 					<td colspan="8">
 						<table style="width: 100%;">
@@ -959,8 +965,9 @@
 						</table>
 					</td>
 					<td></td>
-				</tr>
+				</tr>-->
 				<tr style="text-align: right; font-family: Arial; font-size: 14.0pt;">
+					<td></td>
 					<td></td>
 					<td>TOTAL：</td>
 					<td></td>
@@ -975,7 +982,7 @@
 <%
 		else
 %>
-				<tr>
+				<!--<tr>
 					<td></td>
 					<td colspan="8">
 						<table style="width: 100%;">
@@ -987,7 +994,7 @@
 							</tr>
 						</table>
 					</td>
-				</tr>
+				</tr>-->
 				<tr style="text-align: right; font-family: Arial; font-size: 14.0pt;">
 					<td></td>
 					<td>TOTAL：</td>
@@ -1048,16 +1055,16 @@
 					</tr>
 					<tr style="font-family: Arial; font-size: 14.0pt">
 						<td style="width: 1%;"></td>
-						<td style="width: 20%;">船名：<%=szVesselName%></td>
+						<td style="width: 30%;">船名：<%=szVesselName%></td>
 						<td style="width: 20%;">航次：<%=szVesselList%></td>
-						<td style="width: 69%;">結關日期：<%=szVesselDate%></td>
+						<td style="width: 49%;">結關日期：<%=szVesselDate%></td>
 					</tr>
 				</table>
 			</div>
 			<div id="report12" style="width: 95%; margin: 0 auto;">
 			<table class="grid_view" align="center" style="background-color: #c9e0f8; width: 100%; border: 1px solid #000000;">
 				<tr style="text-align: right;font-size: 14.0pt;">
-					<td class="print-remove"></td>
+					<!--<td class="print-remove"></td>-->
 					<td class="print-remove">攬貨商編號</td>
 					<td>攬貨商</td>
 					<td>核對</td>
@@ -1087,39 +1094,36 @@
 			set rs = nothing
 
 			if nGroupType = 1 then
-				sql = "select ID, IsChecked, NeededForestry, sum(Piece) as TotalPiece, sum(Volume) as TotalVolume,"
-				sql = sql + " sum(TotalWeight) as TotalWeightSum, sum(Board) as TotalBoard"
-				sql = sql + " from FreightForm where VesselID = '" + szVesselListID + "' "
+				sql		= "select ID, IsChecked, NeededForestry, sum(Piece) as TotalPiece, sum(Volume) as TotalVolume,"
+				sql		= sql + " sum(TotalWeight) as TotalWeightSum, sum(Board) as TotalBoard"
+				sql		= sql + " from FreightForm where VesselID = '" + szVesselListID + "' "
 			
 				if szStartIDTmp(i) <> "" and szEndIDTmp(i) <> "" then
-				   sql = sql + " AND FreightForm.ID >= '" + szStartIDTmp(i) + "' and FreightForm.ID <= '" + szEndIDTmp(i) + "'"
+				   sql = sql + " AND ID >= '" + szStartIDTmp(i) + "' and ID <= '" + szEndIDTmp(i) + "'"
 				end if
+
+				sql		= sql + " GROUP BY ID, IsChecked, NeededForestry "
+				sql		= sql + " ORDER BY ID"
 			else
 				sql		= ""
-				sql		= sql + "SELECT FreightForm.ID, FreightForm.IsChecked, FreightForm.NeededForestry, "
-				sql		= sql + "       SUM(FreightForm.Piece) as TotalPiece, "
-				sql		= sql + "       SUM(FreightForm.Volume) as TotalVolume, "
-				sql		= sql + "       SUM(FreightForm.TotalWeight) as TotalWeightSum, "
-				sql		= sql + "       SUM(FreightForm.Board) as TotalBoard, "
-				sql		= sql + "       iif(isnull(FreightOwner.ID), '', FreightOwner.ID) as FO_ID, "
-				sql		= sql + "       iif(isnull(FreightOwner.Name), '', FreightOwner.Name) as FO_Name, "
-				sql		= sql + "       iif(isnull(FormToOwner.VesselLine), '', FormToOwner.VesselLine) as VesselLine "
-				sql		= sql + "  FROM ((FreightForm "
-				sql		= sql + "  LEFT OUTER JOIN FormToOwner ON FormToOwner.FormID = FreightForm.ID) "
-				sql		= sql + "  LEFT OUTER JOIN FreightOwner ON FormToOwner.OwnerID = FreightOwner.ID) "
-				sql		= sql + " WHERE FreightForm.VesselID = '" + szVesselListID + "' "
-				sql		= sql + "   AND (FormToOwner.VesselLine = '" + szVesselLine + "' OR FormToOwner.VesselLine IS NULL) "
-				sql		= sql + "   AND (FreightOwner.ID = '' OR FreightOwner.ID IS NULL) "
+				sql		= sql + "SELECT ID, IsChecked, NeededForestry, "
+				sql		= sql + "       SUM(Piece) as TotalPiece, "
+				sql		= sql + "       SUM(Volume) as TotalVolume, "
+				sql		= sql + "       SUM(TotalWeight) as TotalWeightSum, "
+				sql		= sql + "       SUM(Board) as TotalBoard, "
+				sql		= sql + "       FO_ID, "
+				sql		= sql + "       FO_Name "
+				sql		= sql + "  FROM ( "
+                sql		= sql + "       SELECT DISTINCT FreightForm.*, FormToOwner.OwnerID, iif(isnull(FreightOwner.ID), '', FreightOwner.ID) as FO_ID, iif(isnull(FreightOwner.Name), '', FreightOwner.Name) as FO_Name "
+				sql		= sql + "         FROM ((FreightForm "
+				sql		= sql + "         LEFT JOIN FormToOwner ON FormToOwner.FormID = FreightForm.ID) "
+				sql		= sql + "         LEFT JOIN FreightOwner ON FormToOwner.OwnerID = FreightOwner.ID) "
+				sql		= sql + "        WHERE FreightForm.VesselID = '" + szVesselListID + "' "
+				sql		= sql + "          AND (FreightOwner.ID = '' OR FreightOwner.ID IS NULL) "
+                sql		= sql + " ) AS TEMP "
+                sql		= sql + " GROUP BY ID, IsChecked, NeededForestry, FO_ID, FO_Name "
+				sql		= sql + " ORDER BY FO_ID DESC"
 			end if
-                        
-			if nGroupType = 1 then
-				sql = sql + " GROUP BY FreightForm.ID, FreightForm.IsChecked, FreightForm.NeededForestry "
-				sql = sql + " ORDER BY FreightForm.ID"
-			else
-				sql = sql + " GROUP BY FreightForm.ID, FreightForm.IsChecked, FreightForm.NeededForestry, FreightOwner.ID, FreightOwner.Name, FormToOwner.VesselLine "
-				sql = sql + " ORDER BY FreightOwner.ID DESC"
-			end if
-
 			set rs = conn.execute(sql) 
 	
 			nCurIndex = 0
@@ -1145,7 +1149,7 @@
 			 	nCurIndex = nCurIndex + 1
 %>
 				<tr style="text-align: right;font-size: 14.0pt;">
-					<td style="border-bottom: 1px solid #000000; height: 5px;" class="print-remove">
+					<!--<td style="border-bottom: 1px solid #000000; height: 5px;" class="print-remove">-->
 <%
 				nCurIndex = nCurIndex + 1
                             	
@@ -1161,7 +1165,7 @@
 <%
 				'end if
 %>
-					</td>
+					<!--</td>-->
 <%
 				if nGroupType = 1 then
 					sql = "select FreightOwner.ID, FreightOwner.Name from FreightOwner, FormToOwner"
@@ -1246,7 +1250,7 @@
 		next
 %>
 				<tr style="text-align: right; font-family: Arial; font-size: 14.0pt;">
-					<td style="border-top: 1px solid #000000; height: 5px;" class="print-remove"></td>
+					<!--<td style="border-top: 1px solid #000000; height: 5px;" class="print-remove"></td>-->
 					<td style="border-top: 1px solid #000000; height: 5px;">TOTAL：</td>
 					<td style="border-top: 1px solid #000000; height: 5px;" class="print-remove"></td>
 					<td style="border-top: 1px solid #000000; height: 5px;" class="print-remove"></td>
@@ -1293,7 +1297,7 @@
         	response.write "　　"
         end if
 %>
-			<input name="Re_Search" type="button" style="border-color:#C9E0F8; border-style: outset; border-width: 2px" value="重新查詢" OnKeyDown="ReSearchByKeyPress()" OnMouseUp="OnReSearch()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)" />
+			<input name="Re_Search" type="button" style="border: 2px outset #C9E0F8" value="重新查詢" OnKeyDown="ReSearchByKeyPress()" OnMouseUp="OnReSearch()" onfocusin="SetFocusStyle(this, true, true)" onfocusout="SetFocusStyle(this, false, true)" />
 		</td>
 	</tr>
 <%

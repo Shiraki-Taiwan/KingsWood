@@ -235,8 +235,8 @@ function UpdateTotalPieceAndVolume() {
             bSkipAnyPiece = true
         }
 
-        nPieceSum += parseInt(nPiece);
-        fVolumeSum += parseInt(document.form[18 + i * nFieldDiff].value);
+        nPieceSum += parseFloat(nPiece);
+        fVolumeSum += parseFloat(document.form[18 + i * nFieldDiff].value);
     }
     document.form.StoreSum_Piece.value = nPieceSum;
 

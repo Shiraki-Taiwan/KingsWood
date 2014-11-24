@@ -56,7 +56,7 @@
     szVesselID = szVesselListID
     
     szID = request ("ID")               '單號
-    
+
     szFind = request ("Find")           '要往前或往後一單號?
     
     szStatus = request ("Status")
@@ -80,7 +80,7 @@
     else
         szPrevID = ""
     end if
-    
+
     '找前/後一單號
     sql = "select ID from FreightForm where VesselID = '" + szVesselListID + "' group by ID order by ID"    
     set rs = conn.execute(sql)
@@ -117,7 +117,7 @@
         wend 
         
         nPageNum = 1
-        
+
     elseif szFind = "Next" then
         n = 0
     
@@ -150,7 +150,7 @@
                 rs.movenext
             end if
         wend
-        
+
         nPageNum = 1
     else
         '18-Nov2004: 剛進入此page時, 顯示第一筆資料
@@ -162,8 +162,8 @@
         elseif szStatus = "UsePrevFoundID" then 
             szID = szPrevFoundID
             nPageNum = 1
+
         end if
-        
     end if
     
     '29-Nov2004: 若輸入的單號不滿4位, 以0補滿, ex, 999 ==> 0999
@@ -183,7 +183,7 @@
             szID = CStr(IDTmp)
         end if
     end if
-    
+
     '===========查詢欲修改的資料=========== 
     
     dim szIDTmp(50), szStorehouseTmp(50), szPackageStyleIDTmp(50)
@@ -269,7 +269,7 @@
     '04-Jan2005: 以輸入順序顯示
     sql = "select * from FreightForm where ID = '" + szID + "'" 
     sql = sql + " and VesselID = '" + szVesselListID + "' order by SN, PageNo"
-    
+    'Response.Write(sql)
     set rs = conn.execute(sql)
     
     dim nSkipDataNumTmp
