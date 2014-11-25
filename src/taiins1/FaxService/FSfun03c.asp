@@ -311,8 +311,7 @@
 						sql		= sql + "  FROM FreightForm, FormToOwner "
 						sql		= sql + " WHERE FreightForm.VesselID = '" + szVesselListID + "' "
 						sql		= sql + "   AND FormToOwner.FormID = FreightForm.ID "
-					'	sql		= sql + "   AND FormToOwner.OwnerID = '" + szOwner + "' "
-					'	sql		= sql + "   AND FormToOwner.VesselLine = '" + szVesselLine + "' "
+						sql		= sql + "   AND FormToOwner.VesselLine = '" + szVesselLine + "' "
 
 						if r_szOwnerList = "" then
 							sql	= sql + "   AND FormToOwner.OwnerID = '" + szOwner + "' "
@@ -814,7 +813,7 @@
 					sql = "SELECT DISTINCT FreightOwner.ID, FreightOwner.Name FROM FreightOwner, FormToOwner"
 					sql = sql + " WHERE FormToOwner.FormID = '" + rs("ID") + "' "
 					sql = sql + " AND FormToOwner.OwnerID = FreightOwner.ID "
-				'	sql = sql + " AND FormToOwner.VesselLine = '" + szVesselLine + "' "
+					sql = sql + " AND FormToOwner.VesselLine = '" + szVesselLine + "' "
 					
 					set rs1 = conn.execute(sql)
 					
