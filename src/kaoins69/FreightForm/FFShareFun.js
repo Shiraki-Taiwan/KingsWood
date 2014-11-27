@@ -260,7 +260,7 @@ function isNumber(n) {
 }
 function formatFloat(num, pos) {
     var size = Math.pow(10, pos);
-    return Math.round(num * size) / size;
+    return (Math.round(num * size) / size).toFixed(pos);
 }
 function ChangeTextColor2(a_nIndex, nLength, nWidth, nHeight, fVolume, bIsPLValue) {
     var ColorYellow = "#FFFFA0", ColorWhite = "#ffffff", ColorPink = "#FFC8FF";
