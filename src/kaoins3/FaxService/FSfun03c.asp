@@ -751,6 +751,7 @@
 				sql		= sql + "         LEFT JOIN FormToOwner ON FormToOwner.FormID = FreightForm.ID) "
 				sql		= sql + "         LEFT JOIN FreightOwner ON FormToOwner.OwnerID = FreightOwner.ID) "
 				sql		= sql + "        WHERE FreightForm.VesselID = '" + szVesselListID + "' "
+                sql		= sql + "          AND FormToOwner.VesselLine = '" + szVesselLine + "' "
                 sql		= sql + " ) AS TEMP "
                 sql		= sql + " GROUP BY ID, IsChecked, NeededForestry, FO_ID, FO_Name "
 				sql		= sql + " ORDER BY FO_ID DESC"
@@ -769,6 +770,7 @@
 				sql		= sql + "         LEFT JOIN FormToOwner ON FormToOwner.FormID = FreightForm.ID) "
 				sql		= sql + "         LEFT JOIN FreightOwner ON FormToOwner.OwnerID = FreightOwner.ID) "
 				sql		= sql + "        WHERE FreightForm.VesselID = '" + szVesselListID + "' "
+                sql		= sql + "          AND FormToOwner.VesselLine = '" + szVesselLine + "' "
 	
 				if r_szOwnerList = "" then
 					if szOwner = "" then
