@@ -130,6 +130,12 @@
 					window.open("PrintOfSelect.aspx?vlid=" + $.url.param("VesselListID") + "&line=" + $.url.param("VesselLine") + "&t=" + user_type + "&ids=" + searchIDs);
 				else alert("未選取任何項目");
 			});
+			$(".print-empty").click(function () {
+			    var searchIDs = $(".printNo-empty:checked").map(function () { return $(this).val(); }).get();
+			    if (searchIDs.length > 0)
+			        window.open("PrintOfSelect.aspx?vlid=" + $.url.param("VesselListID") + "&line=" + $.url.param("VesselLine") + "&t=" + user_type + "&ids=" + searchIDs);
+			    else alert("未選取任何項目");
+			});
 			$(".print-local").click(function () {
 			    var searchIDs = $(".printNo:checked").map(function () { return $(this).val(); }).get();
 			    if (searchIDs.length > 0)
@@ -141,6 +147,12 @@
 				if (searchIDs.length > 0)
 					window.open("Save/SummaryHandler.ashx?f=" + $(this).attr("format") + "&vlid=" + $.url.param("VesselListID") + "&line=" + $.url.param("VesselLine") + "&t=" + user_type + "&ids=" + searchIDs);
 				else alert("未選取任何項目");
+			});
+			$(".save-empty").click(function () {
+			    var searchIDs = $(".printNo-empty:checked").map(function () { return $(this).val(); }).get();
+			    if (searchIDs.length > 0)
+			        window.open("Save/SummaryHandler.ashx?f=" + $(this).attr("format") + "&vlid=" + $.url.param("VesselListID") + "&line=" + $.url.param("VesselLine") + "&t=" + user_type + "&ids=" + searchIDs);
+			    else alert("未選取任何項目");
 			});
 			$(".save-local").click(function () {
 				var searchIDs = $(".printNo:checked").map(function () { return $(this).val(); }).get();
@@ -161,7 +173,7 @@
 	</script>
 </head>
 <body style="background-image: url(../image/Logo.gif); background-position: center; background-repeat: no-repeat; background-position-y: top;">
-	<div style="margin: 0px auto; margin-top: 100px; text-align: center;">
+	<div style="margin: 0 auto; margin-top: 100px; text-align: center;">
 		<span style="font-size: large;">上 林 公 證 有 限 公 司<br />KINGSWOOD SURVEY & MEASURER LTD</span>
 		<br />
 		<br />
@@ -237,7 +249,7 @@
 <%
 	end if
 %>
-						<a href="#" style="margin-left: 24px;" class="print-local" object="report01" vesselName="<%=szVesselName%>" vesselList="<%=szVesselList%>" vesselDate="<%=szVesselDate%>">
+						<a href="#" style="margin-left: 24px;" class="print-local">
 							<span>列印</span>
 						</a>
 					</td>
@@ -250,7 +262,7 @@
 						<hr size="0" />
 					</td>
 				</tr>
-				<tr valign="middle">
+				<tr style="vertical-align: middle;">
 					<td style="width: 1%;"></td>
 					<td style="width: 30%; font-family: Arial; font-size: 14.0pt">船名：<%=szVesselName%></td>
 					<td style="width: 20%; font-family: Arial; font-size: 14.0pt">航次：<%=szVesselList%></td>
@@ -635,7 +647,7 @@
 							<!--<a target="_blank" href="FSfun01b.asp?Status=FirstLoad&VesselListID=<% = szVesselListID %>" style="margin-left: 24px;">
 								<span>攬貨報告書列印/傳真</span>
 							</a>-->
-							<a href="#" style="margin-left: 24px;" class="print" object="report11" vesselName="<%=szVesselName%>" vesselList="<%=szVesselList%>" vesselDate="<%=szVesselDate%>">
+							<a href="#" style="margin-left: 24px;" class="print">
 								<span>列印(主要S/O)</span>
 							</a>
 						</td>
@@ -658,7 +670,7 @@
 					</tr>
 				</table>
 			</div>
-			<div id="report11" style="width: 95%; margin: 0 auto;">
+			<div style="width: 95%; margin: 0 auto;">
 			<table class="grid_view" align="center" style="background-color: #c9e0f8; width: 100%; border: 1px solid #000000;">
 				<tr style="text-align: right; font-family: Arial; font-size: 14.0pt; border: 1px solid #000000;">
 					<td>
@@ -953,20 +965,6 @@
 
 		if nGroupType = 1 then
 %>
-				<!--<tr>
-					<td></td>
-					<td colspan="8">
-						<table style="width: 100%;">
-							<tr>
-								<td style="border-bottom: 1px solid #000000; height: 5px;"></td>
-							</tr>
-							<tr>
-								<td style="border-top: 1px solid #000000; height: 5px;"></td>
-							</tr>
-						</table>
-					</td>
-					<td></td>
-				</tr>-->
 				<tr style="text-align: right; font-family: Arial; font-size: 14.0pt;">
 					<td></td>
 					<td></td>
@@ -983,19 +981,6 @@
 <%
 		else
 %>
-				<!--<tr>
-					<td></td>
-					<td colspan="8">
-						<table style="width: 100%;">
-							<tr>
-								<td style="border-bottom: 1px solid #000000; height: 5px;"></td>
-							</tr>
-							<tr>
-								<td style="border-top: 1px solid #000000; height: 5px;"></td>
-							</tr>
-						</table>
-					</td>
-				</tr>-->
 				<tr style="text-align: right; font-family: Arial; font-size: 14.0pt;">
 					<td></td>
 					<td>TOTAL：</td>
@@ -1038,8 +1023,16 @@
 			<div style="width: 95%; margin: 0 auto;">
 				<table border="0" cellspacing="1" width="100%" align="center" bgcolor="#C9E0F8">
 					<tr>
-						<td colspan="4" align="right" style="font-size: 14pt; color: #0000ff">
-							<a href="#" style="margin-left: 24px;" class="print-local" object="report12" title="總表查詢" vesselName="<%=szVesselName%>" vesselList="<%=szVesselList%>" vesselDate="<%=szVesselDate%>">
+						<td style="font-size: 14pt; color: #0000ff">
+							<a href="#" class="save-empty" format="txt">
+								<span>另存新檔(txt)</span>
+							</a>
+							<a href="#" class="save-empty" format="csv">
+								<span>另存新檔(csv)</span>
+							</a>
+						</td>
+						<td colspan="3" style="font-size: 14pt; color: #0000ff; text-align: right;">
+							<a href="#" style="margin-left: 24px;" class="print-empty" title="總表查詢">
 								<span>列印(剩餘S/O)</span>
 							</a>
 						</td>
@@ -1065,7 +1058,10 @@
 			<div id="report12" style="width: 95%; margin: 0 auto;">
 			<table class="grid_view" align="center" style="background-color: #c9e0f8; width: 100%; border: 1px solid #000000;">
 				<tr style="text-align: right;font-size: 14.0pt;">
-					<!--<td class="print-remove"></td>-->
+					<td>
+						<label>列印</label>
+						<input type="checkbox" checked="checked" style="border-color: #C9E0F8" class="check_all" target="printNo-empty" />
+					</td>
 					<td class="print-remove">攬貨商編號</td>
 					<td>攬貨商</td>
 					<td>核對</td>
@@ -1150,24 +1146,12 @@
 			 	nCurIndex = nCurIndex + 1
 %>
 				<tr style="text-align: right;font-size: 14.0pt;">
-					<!--<td style="border-bottom: 1px solid #000000; height: 5px;" class="print-remove">-->
+					<td>
+						<input type="checkbox" checked="checked" name="printNo-empty" value="<% = rs("ID") %>" class="printNo-empty" style="border-color: #C9E0F8" />
+					</td>
 <%
 				nCurIndex = nCurIndex + 1
                             	
-				'if ChkTmp = 1 then
-%>
-						<!--<input type="hidden" name="FormID_<%=nFoundCount%>" value='<% = rs("ID") %>' />
-						<input type="checkbox" checked name="Chk_<%=nFoundCount%>" value="1" style="border-color: #C9E0F8" />-->
-<%
-				'else
-%>
-						<!--<input type="hidden" name="FormID_<%=nFoundCount%>" value='<% = rs("ID") %>' />
-						<input type="checkbox" name="Chk_<%=nFoundCount%>" value="1" style="border-color: #C9E0F8" />-->
-<%
-				'end if
-%>
-					<!--</td>-->
-<%
 				if nGroupType = 1 then
 					sql = "select FreightOwner.ID, FreightOwner.Name from FreightOwner, FormToOwner"
 					sql = sql + " where FormToOwner.FormID = '" + CStr(rs("ID")) + "'"
@@ -1251,7 +1235,7 @@
 		next
 %>
 				<tr style="text-align: right; font-family: Arial; font-size: 14.0pt;">
-					<!--<td style="border-top: 1px solid #000000; height: 5px;" class="print-remove"></td>-->
+					<td style="border-top: 1px solid #000000; height: 5px;"></td>
 					<td style="border-top: 1px solid #000000; height: 5px;">TOTAL：</td>
 					<td style="border-top: 1px solid #000000; height: 5px;" class="print-remove"></td>
 					<td style="border-top: 1px solid #000000; height: 5px;" class="print-remove"></td>
